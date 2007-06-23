@@ -10,7 +10,7 @@ Add your content here.  Format your content with:
 
 = Basic steps =
 
-  Defining the node structure [NodeStructure]
+   [NodeStructure Defining the node structure]
 
 
 
