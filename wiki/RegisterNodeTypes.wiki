@@ -1,0 +1,9 @@
+#This page describes how to register node types in the repository
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
