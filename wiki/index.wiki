@@ -1,6 +1,8 @@
 = jackrabbit-jcr-demo =
          Jackrabbit-jcr-demo is web application written to be used as a reference to new comers to Jackrabbit. It is a web based blog application. Rather than being a feature rich blog application, it maintains the simplicity and it focuses more on the JCR usage. 
 
+Complete proposal can be found at http://wiki.apache.org/general/NandanaMihindukulasooriya/GSoC2007/jackrabbit-jcr-demo
+
 = Introduction =
 
 Add your content here.  Format your content with:
