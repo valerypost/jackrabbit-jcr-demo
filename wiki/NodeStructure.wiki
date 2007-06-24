@@ -36,6 +36,19 @@ CND Notation
 
 = Node Structure =
 
+{{{
+
+/blogRoot [nt:folder]
+/blogRoot/user [blog:user]
+/blogRoot/user/<yyyy> [nt:folder]
+/blogRoot/user/<yyyy>/<mm> [nt:folder]
+/blogRoot/user/<yyyy>/<mm>/blogEntry [blog:blogEntry]
+/blogRoot/user/<yyyy>/<mm>/blogEntry/comment [blog:Comment]
+/blogRoot/user/avatar [nt:file]
+/<libray> [nt:folder]
+
+}}}
+
 
 = Lessons learned =
 
