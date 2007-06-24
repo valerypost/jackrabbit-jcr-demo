@@ -1,7 +1,7 @@
 # This page describes about the node structure of the jackrabbit-jcr-demo application
 
 = Introduction =
-
+       When building a application on top of Jackrabbit, defining the node structure and custom node types plays a major role.
 
 = Custom Node Types =
 
@@ -51,4 +51,3 @@ CND Notation
 
 
 = Lessons learned =
-
