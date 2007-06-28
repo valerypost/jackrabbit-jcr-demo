@@ -20,4 +20,9 @@
 
 = Important classes =
 
-= Things that can't be done with JCR =
+
+= Lessons learned =
+
+  * [ThingsThatCantBeDone Things that can't be done with JCR]
+
+   
