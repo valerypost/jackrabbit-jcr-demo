@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+  -->
+  
+<web-app id="web-app_1" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+   <display-name>jcr-jackrabbit-demo</display-name>
+
+    <!-- ====================================================================== -->
+    <!--    J A C K R A B B I T		R E P O S I T O R Y		S E R V L E T       -->
+    <!-- ====================================================================== -->
+    <servlet>
+        <servlet-name>JackrabbitRepositoryServlet</servlet-name>
+        <description>
+            Servlet that makes a Jackrabbit repository available as a servlet context
+            attribute. The repository is started during servlet initialization and
+            shut down when the servlet is destroyed.
+        </description>
+        <servlet-class>org.apache.jackrabbit.servlet.jackrabbit.JackrabbitRepositoryServlet</servlet-class>
+        <init-param>
+            <param-name>repository.home</param-name>
+            <param-value>webapps/jackrabbit-jcr-demo/jackrabbit</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- ====================================================================== -->
+    <!--                     I N I T		S E R V L E T                       -->
+    <!-- ====================================================================== -->
+    <servlet>
+    	<servlet-name>InitServlet</servlet-name>
+        <description>
+            The init servlet registers namespace and custom nodetypes used in jackrabbit-jcr-demo.
+        </description>  
+        <servlet-class>org.apache.jackrabbit.demo.blog.servlet.InitServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+        <init-param>
+         <param-name>cnd.path</param-name>
+         <param-value>/conf/jcr-demo.cnd</param-value>
+         <description> Path of the CND file which defines the custom node types used in jackrabbit-jcr-demo</description>
+      </init-param>
+    </servlet>
+   
+    <!-- ====================================================================== -->
+    <!--            U S E R    C O N T R O L L E R	 S E R V L E T              -->
+    <!-- ====================================================================== -->
+   <servlet>
+      <servlet-name>UserController</servlet-name>
+      <description>User controller handles the user management taks</description> 
+      <servlet-class>org.apache.jackrabbit.demo.blog.servlet.UserControllerServlet</servlet-class>
+   </servlet>
+   
+    <!-- ====================================================================== -->
+    <!--                    L O G I N	  S E R V L E T                         -->
+    <!-- ====================================================================== --> 
+   <servlet>
+    <servlet-name>LoginController</servlet-name>
+   	<description> This servlet is used to handle user log in and log out</description>
+   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.LoginControllerServlet</servlet-class>
+   </servlet>
+   
+    <!-- ====================================================================== -->
+    <!--         B L O G    C O N T R O L L E R		  S E R V L E T             -->
+    <!-- ====================================================================== --> 
+   
+   <servlet>
+   	<description> Handles managemenet of blog entries like adding, retriving, deleting</description>
+   	<servlet-name>BlogControllerServlet</servlet-name>
+   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.BlogControllerServlet</servlet-class>
+   </servlet>
+
+    <!-- ====================================================================== -->
+    <!--                  S E R V L E T   M A P P I N G                         -->
+    <!-- ====================================================================== -->
+
+   <servlet-mapping>
+      <servlet-name>UserController</servlet-name>
+      <url-pattern>/UserController/*</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+   	<servlet-name>LoginController</servlet-name>
+   	<url-pattern>/LoginController/*</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+   	<servlet-name>BlogControllerServlet</servlet-name>
+   	<url-pattern>/BlogController/*</url-pattern>
+   </servlet-mapping>
+
+
+    <!-- ====================================================================== -->
+    <!--                    W E L C O M E   F I L E S                           -->
+    <!-- ====================================================================== -->
+    <welcome-file-list>
+      <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>

@@ -1,0 +1,20 @@
+<blog = 'http://jackrabbit.apache.org/jackrabbit-jcr-demo/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0' >
+<nt = 'http://www.jcp.org/jcr/nt/1.0'>
+
+[blog:user] >  nt:folder, mix:referenceable                  
+- blog:nickname  (string) mandatory
+- blog:email  (string) mandatory
+- blog:password (string) mandatory
+
+[blog:comment] > nt:hierarchyNode
+- blog:content (string) mandatory primary
+- blog:commenter (reference ) mandatory  < blog:user
+
+[blog:blogEntry] > nt:folder, mix:referenceable
+- blog:title (string) mandatory primary
+- blog:content (string) mandatory
+- blog:rate (long)
+- blog:created (date)
+- blog:published (date)
+- blog:updated (date)
