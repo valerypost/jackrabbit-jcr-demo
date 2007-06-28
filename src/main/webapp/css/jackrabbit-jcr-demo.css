@@ -1,0 +1,24 @@
+.plainborder-ash {
+	border: 1px solid #CCCCCC;
+}
+.formTextField {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #666666;
+	background-color: #FBFFEC;
+	height: 15px;
+	width: 15px;
+	border: 2px solid #CCCCCC;
+}
+
+.Title25 {
+	font:Arial, Helvetica, sans-serif;
+	font-size:25px;
+}
+
+.title15 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 15px;
+	color: #666666;
+	font-weight: bold;
+}
