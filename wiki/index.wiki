@@ -9,7 +9,7 @@
 
    * [NodeStructure Defining the node structure]
  
-   * [# Creating a repository]
+   * [# Configuring the repository]
 
    * [RegisterNodeTypes Registering the node types in the repository]
     
