@@ -4,10 +4,6 @@
 
 = Introduction =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
 
 = Basic steps =
 
@@ -24,3 +20,4 @@ Add your content here.  Format your content with:
 
 = Important classes =
 
+= Things that can't be done with JCR =
