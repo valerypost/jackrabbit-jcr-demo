@@ -16,6 +16,9 @@ Add your content here.  Format your content with:
    * [# Creating a repository]
 
    * [RegisterNodeTypes Registering the node types in the repository]
+    
+   * [ManagingJCRSessionInWebapps Managing JCR sessions in a web app ]
+
 
 
 
