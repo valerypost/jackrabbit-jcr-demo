@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/page.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -44,29 +45,29 @@
 		<!-- InstanceEndEditable -->
         <td width="5"></td>
 		<!-- InstanceBeginEditable name="Middle" -->
-        <td width="80%">        
+        <td width="80%" height="800" valign="top">        
           <table width="100%">
 			   <tr bgcolor="#CCCCCC">
 				   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">Create New Blog Entry</a></td>
 				   <td width="1%"></td>
-				   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/BlogController.do?action=view">View My Blog</a></td>
+				   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/BlogController?action=view">View My Blog</a></td>
 				   <td width="1%"></td>
-				   <td width="19%" align="center"> <a href="#">Search Blogs</a></td>
+				   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp">Search Blogs</a></td>
 				   <td width="1%"></td>
 				   <td width="19%" align="center"> <a href="#">Wiki Pages</a></td>
 				   <td width="1%"></td>
-                   <td width="19%" align="center"> <a href="#">Logout</a></td>
+                   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/LoginController?action=logout">Logout</a></td>
 			   </tr>
 			   <tr>
 			   		<td width="5"></td>
 			   </tr>
 		  </table> 
           <form method="post" action="/jackrabbit-jcr-demo/BlogController/">
-        	<table width="100%" border="1">
-         	 <tr>
+        	<table width="100%" border="0" cellspacing="5">
+         	 <tr bgcolor="#CCCCCC">
             	<td><div align="center">Add a blog entry </div></td>
           	</tr>  
-		  	<tr>
+		  	<tr bgcolor="#CCCCCC">
               <td>
             	<table width="100%" border="0">
               		<tr>
@@ -84,7 +85,7 @@
             	</table>
               </td>
             </tr>
-            <tr>
+            <tr bgcolor="#CCCCCC">
               <td>
                	<div align="center">
               		<input name="action" type="hidden" id="action" value="add" />

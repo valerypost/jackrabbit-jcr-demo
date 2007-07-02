@@ -99,6 +99,19 @@
    	<url-pattern>/BlogController/*</url-pattern>
    </servlet-mapping>
 
+    <!-- ====================================================================== -->
+    <!--                          TAG LIB DECLARATIONS                          -->
+    <!-- ====================================================================== -->
+    
+    <taglib>
+    	<taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
+    	<taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+    </taglib>
+    
+    <taglib>
+    	<taglib-uri>http://java.sun.com/jsp/jstl/fmt</taglib-uri>
+    	<taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
+    </taglib>
 
     <!-- ====================================================================== -->
     <!--                    W E L C O M E   F I L E S                           -->

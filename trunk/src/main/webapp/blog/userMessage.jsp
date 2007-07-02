@@ -20,24 +20,18 @@
 		language="java" 
 		errorPage="" 
         buffer="8kb"
+        isELIgnored="false"
 %>
-<%
-     String title = (String)request.getAttribute("msgTitle");
-	 String message = (String)request.getAttribute("msgBody");
-	 String backURLText = (String) request.getAttribute("urlText");
-	 String backURL = (String) request.getAttribute("url");
-
-%>
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/page.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Untitled Document</title>
+<title>Blog - User Message </title>
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
+<%@ taglib uri='http://java.sun.com/jstl/core' prefix='c' %>
 <link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
 <!-- InstanceEndEditable -->
 </head>
@@ -59,15 +53,15 @@
 		<!-- InstanceEndEditable -->
         <td width="5"></td>
 		<!-- InstanceBeginEditable name="Middle" -->
-        <td width="80%" height="600" align="center"><table width="82%"  border="0">
+        <td width="80%" height="800" align="center"><table width="82%"  border="0">
           <tr>
-            <td  align="center" class="Title"> <%= title %> </td>
+            <td  align="center" class="Title">${msgTitle}</td>
           </tr>
           <tr>
-            <td align="center"> <%= message %></td>
+            <td align="center">${msgBody}</td>
           </tr>
           <tr>
-            <td align="center"> <a href="<%=backURL%>" > <%=backURLText%> </a></td>
+            <td align="center"> <a href="${url}" >${urlText}</a></td>
           </tr>
         </table></td>
 		<!-- InstanceEndEditable -->

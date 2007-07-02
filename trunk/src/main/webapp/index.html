@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 -->
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/page.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -44,27 +43,32 @@
 		<!-- InstanceEndEditable -->
         <td width="5"></td>
 		<!-- InstanceBeginEditable name="Middle" -->
-        <td width="80%" height="600" align="center">
+        <td width="80%" height="800" align="center">
 		<form action="/jackrabbit-jcr-demo/LoginController/" method="post" >
-		<table width="47%" border="1">
-          <tr>
-            <td colspan="2"><div align="center"><strong>User Login </strong></div></td>
+		<table width="47%" border="0">
+          <tr bgcolor="#CCCCCC">
+            <td colspan="2" ><div align="center"><strong>User Login </strong></div></td>
           </tr>
-          <tr>
+          <tr bgcolor="#CCCCCC">
             <td width="33%">Username</td>
             <td width="67%"><input name="username" type="text" id="username" size="40" /></td>
           </tr>
-          <tr>
+          <tr bgcolor="#CCCCCC">
             <td>Password</td>
             <td><input name="password" type="password" id="password" size="40" /></td>
           </tr>
-		  <tr>
+		  <tr bgcolor="#CCCCCC">
             <td colspan="2" align="center" >
+              <input name="action" type="hidden" id="action" value="login" />
               <input type="submit" name="Submit" value="Enter" />
 			  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			  <input type="reset" name="Submit2" value="Clear" />
 			</td>
           </tr>
+		  <tr>
+		  	<td  colspan="2" align="center">
+				<a href="/jackrabbit-jcr-demo/blog/newUser.jsp" > Sign Up </a>		          </td>
+		  </tr>
         </table>
 		</form>
 		</td>
