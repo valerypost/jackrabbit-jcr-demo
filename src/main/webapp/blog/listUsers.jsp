@@ -16,16 +16,10 @@
  * limitations under the License.
  */
 %>
-
 <%@ page contentType="text/html; charset=iso-8859-1" 
 		language="java" 
-		import="java.util.ArrayList,org.apache.jackrabbit.demo.blog.model.*" 
 		errorPage="" 
         buffer="8kb"
-%>
-
-<%
-	ArrayList<User> userList = (ArrayList<User>) request.getAttribute("userList");
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -33,9 +27,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Untitled Document</title>
+<title>View All Users</title>
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
+<%@ taglib uri='http://java.sun.com/jstl/core' prefix='c' %>
 <!-- InstanceEndEditable -->
 </head>
 
@@ -69,13 +64,13 @@
                 <td width="25%">Nickname</td>
                 <td width="50%">Email</td>
               </tr>
-			  <%  for (User user : userList) {              %>
-              <tr bgcolor="#D6F1F5">
-                <td><%=user.getUsername()%></td>
-                <td><%=user.getNickname()%></td>
-                <td><%=user.getEmail()%></td>
-              </tr>
-             <%   }                                         %>
+              <c:forEach var="user" items="${userList}">
+              	<tr bgcolor="#D6F1F5">
+               		 <td> ${user.username }</td>
+               		 <td> ${user.nickname }</td>
+               		 <td> ${user.email }</td>
+               </tr>
+             </c:forEach>                      
             </table></td>
           </tr>
         </table>

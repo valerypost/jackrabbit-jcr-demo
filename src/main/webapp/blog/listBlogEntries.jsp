@@ -18,12 +18,8 @@
 %>
 <%@ page contentType="text/html; charset=iso-8859-1" 
 		language="java" 
-		import="java.util.ArrayList,org.apache.jackrabbit.demo.blog.model.*,java.text.*" 
 		errorPage="" 
         buffer="8kb"
-%>
-<%
-		ArrayList<BlogEntry>  blogList = (ArrayList<BlogEntry>) request.getAttribute("blogList");
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -34,7 +30,16 @@
 <title>Jackrabbit-JCR-Demo Blog</title>
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" -->
+
+<!-- comment java script -->
+<script type="text/javascript" src="/jackrabbit-jcr-demo/scripts/comment.js"></script>
+
+<!-- jackrabbit-jcr-demo main css -->
 <link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css">
+
+<!-- jsp tag-lib declarations -->
+<%@ taglib uri='http://java.sun.com/jstl/core' prefix='c' %>
+<%@ taglib uri='http://java.sun.com/jsp/jstl/fmt' prefix='fmt' %>
 <!-- InstanceEndEditable -->
 </head>
 
@@ -55,57 +60,67 @@
 		<!-- InstanceEndEditable -->
         <td width="5"></td>
 		<!-- InstanceBeginEditable name="Middle" -->
-        <td width="80%">
+        <td width="80%" height="800" valign="top">        
           <table width="100%">
 			   <tr bgcolor="#CCCCCC">
 				   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">Create New Blog Entry</a></td>
 				   <td width="1%"></td>
 				   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/BlogController?action=view">View My Blog</a></td>
 				   <td width="1%"></td>
-				   <td width="19%" align="center"> <a href="#">Search Blogs</a></td>
+				   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp">Search Blogs</a></td>
 				   <td width="1%"></td>
 				   <td width="19%" align="center"> <a href="#">Wiki Pages</a></td>
 				   <td width="1%"></td>
-                   <td width="19%" align="center"> <a href="#">Logout</a></td>
+                   <td width="19%" align="center"> <a href="/jackrabbit-jcr-demo/LoginController?action=logout">Logout</a></td>
 			   </tr>
 			   <tr>
 			   		<td width="5"></td>
 			   </tr>
-		  </table>
-        
-		<%  for(int i = 0 ; i < blogList.size() ; i++ )   {                          
-					BlogEntry blogEntry = blogList.get(i);											%>
+		  </table> 
+		<c:forEach var="blogEntry" items="${blogList}">                 									
 		<table width="100%" border="0" cellpadding="0" cellspacing="10" class="plainborder-ash">
               <tr>
                   <td>
                       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="bodytext11grey">
                            <tr>
-                              	<td width="70%" align="left" class="title15"><%= blogEntry.getTitle() %></td>
+                              	<td width="70%" align="left" class="title15">${blogEntry.title}</td>
                             </tr>																															
                             <tr>
                                 <td height="10" colspan="2"></td>
 						    </tr>		                            													
                             <tr>
-                            	<td colspan="2"> <%= blogEntry.getTitle() %> </td>
+                            	<td colspan="2"> ${blogEntry.content}</td>
                             </tr>
 		                    <tr>
                                 <td height="10" colspan="2"></td>
                             </tr>
                             <tr>
                               	<td height="25" colspan="2" bgcolor="#F3F3F3" class="bodytext11grey" >												
-	                                   <strong> by <%= blogEntry.getUser() %>, on 
-	                                            <%= (new SimpleDateFormat("EEEEEE, yyyy.MM.dd 'at' HH:mm:ss a")).format(blogEntry.getCreatedOn().getTime()) %>
-							  												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                                by <strong>${blogEntry.user}</strong>, 
+	                                on <fmt:formatDate type="both" dateStyle="full" value="${blogEntry.createdOn.time}"/>
 								</td>
-                            </tr>	                            									                            									
+                            </tr> 
+                            <c:if test="${blogEntry.user ne username}">
+                            <tr>
+                            	<td height="10"></td>
+                            </tr>
+	                        <tr align="center" bgcolor="#F3F3F3">
+	                            	<td>
+	                            		<div id="${blogEntry.UUID}">
+	                            			<input type='button' name='Button' value='Comment' onClick="addComment('${blogEntry.UUID}');"/>
+	                            		</div>
+	                           		 </td>
+	                            </tr>
+                            </c:if>                           									                            									
 							<tr>
 								 <td colspan="2" class="hspliter"></td>
 							 </tr>
                     	</table>
                     </td>
                 </tr> 											      
-         </table>			 
-		<%   }                                                                 %> 	 
+         </table>	
+         <br/>	
+         </c:forEach>	 
 		</td>
 		<!-- InstanceEndEditable -->
         <td width="5"></td>

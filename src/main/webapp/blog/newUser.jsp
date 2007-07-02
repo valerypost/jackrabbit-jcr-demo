@@ -45,7 +45,7 @@
 		<!-- InstanceEndEditable -->
         <td width="5"></td>
 		<!-- InstanceBeginEditable name="Middle" -->
-        <td >
+        <td  height="800" valign="top" width="80%">
         <form method="post" action="/jackrabbit-jcr-demo/UserController/">
         <table width="100%" border="1">
           <tr>
@@ -78,8 +78,8 @@
           <tr>
             <td><div align="center">
               <input name="action" type="hidden" id="action" value="add" />
-              <input type="reset" name="Submit2" value="Clear" />
               <input type="submit" name="Submit" value="Save" />
+			  <input type="reset" name="Submit2" value="Clear" />
             </div></td>
           </tr>  
         </table>
