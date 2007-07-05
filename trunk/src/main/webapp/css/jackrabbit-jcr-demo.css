@@ -1,15 +1,6 @@
 .plainborder-ash {
 	border: 1px solid #CCCCCC;
 }
-.formTextField {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	color: #666666;
-	background-color: #FBFFEC;
-	height: 15px;
-	width: 15px;
-	border: 2px solid #CCCCCC;
-}
 
 .Title25 {
 	font:Arial, Helvetica, sans-serif;
@@ -21,4 +12,69 @@
 	font-size: 15px;
 	color: #666666;
 	font-weight: bold;
+}
+
+.blog_entry_complete{
+	color: #000;
+	border: 1px solid;
+	padding: 1px;	
+	margin: 0 0 10px 0;
+	border-color:#000000;
+	
+}
+
+input.search { 
+	width: 395px; 
+	border: none;
+	background: url(../images/input.gif); 
+	padding: 4px; 
+}
+
+input.login {
+	width: 182px; 
+	border: none;
+	background: url(../images/login.gif); 
+	padding: 4px;
+	
+}
+	
+.blog_entry_complete:hover {
+	border: 1px solid #0033FF;
+}
+
+.blog_entry_inside {
+	background: #f4f4f4;
+}
+
+/* horizontal tabbed menu */	
+#tabs { background: #fff url(../images/bigbox.gif) no-repeat top left; color: #000;  height: 64px; text-align: center; padding: 0 0 0 210px; }
+#tabs li { display: inline; height: 45px; }
+#tabs li a { float: left; background: #fff url(../images/barbg.gif) no-repeat; color: #808080; padding: 7px 0; width: 82px; text-align: center; font-weight: bold; text-decoration: none; }
+#tabs li a:hover { background: #fff url(../images/barcurrent.gif) no-repeat; color: #000; }	
+#tabs li a.current { background: #fff url(../images/barcurrent.gif) no-repeat; color: #2C71AE; }
+#tabs li a.inactive { background: #fff url(../images/barinactive.gif) no-repeat; color: #000; }	
+
+
+.lt {
+	height: 10px;
+	background: #6E6E6E url(../images/lt.gif) no-repeat;
+	color: #FFF;
+}
+
+.lbox {
+	color: #eee;
+	padding: 3px 12px;
+	margin: 0 0 15px 0;
+	background: #6E6E6E url(../images/lb.gif) no-repeat bottom left;
+	height: 150px;
+	font:Arial, Helvetica, sans-serif;
+	font-size:24px;
+}
+
+.image {
+	float: left;
+	margin: 0 9px 3px 0;
+	width: 200px;
+	height:200px;
+	border: 5px solid #EAEAEA;
 }

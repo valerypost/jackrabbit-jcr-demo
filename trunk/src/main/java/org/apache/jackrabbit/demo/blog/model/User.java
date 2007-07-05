@@ -29,7 +29,17 @@ public class User {
 	// UUID of the user node 
 	private String UUID;
 	
+	private String path;
 	
+	
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
 	public User(){
 		
 	}

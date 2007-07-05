@@ -18,6 +18,7 @@ package org.apache.jackrabbit.demo.blog.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.jcr.LoginException;
 import javax.jcr.Repository;
@@ -65,10 +66,10 @@ import org.apache.jackrabbit.servlet.ServletRepository;
 		
 		// JCR session used to access the repository
 		Session session = null;
-		
-		// Get the action which the client want to perform from the request
-		String action = request.getParameter("action");
-		
+		 
+		// Get the action which the client want to perform from the non multi part request
+		 String action = request.getParameter("action");
+		 
 		// throws an exception if no action is specified in the request
 		if( action == null) {
 			throw new ServletException("Action is not specified in the request");
@@ -79,7 +80,7 @@ import org.apache.jackrabbit.servlet.ServletRepository;
 		
 		// If the action is "add" , user wants to add a blog entry
 		if(action.trim().equals("add")) {
-			
+				
 			// Get the title and the content of the blog entry from the request
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
@@ -128,6 +129,7 @@ import org.apache.jackrabbit.servlet.ServletRepository;
 				
 				// Set the blogList as a request attribute 
 				request.setAttribute("blogList",blogList);
+				request.setAttribute("ownBlog",true);
 				
 				// Forward the request to blog entries page
 	            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/listBlogEntries.jsp");
@@ -168,11 +170,45 @@ import org.apache.jackrabbit.servlet.ServletRepository;
 				if (type.trim().equals("ByName")) {
 					String searchName = request.getParameter("searchName");
 					blogList = BlogManager.getByUsername(searchName,session);
+					
+					if (searchName.equals(username)) {
+						request.setAttribute("ownBlog",true);
+					}
 				
                 // Check if the search is done by content of the blog entry
 				} else if (type.trim().equals("ByContent")) {
 					String searchText = request.getParameter("searchText");
 					blogList = BlogManager.getByContent(searchText,session);
+				
+				// Check if the search is done by date of creation of the blog entry
+				} else if (type.trim().equals("ByDate")) {
+					
+					
+					String yearFromStr = request.getParameter("yearFrom");
+					String monthFromStr = request.getParameter("monthFrom");
+					String dateFromStr = request.getParameter("dateFrom");
+					
+					String yearToStr = request.getParameter("yearTo");
+					String monthToStr = request.getParameter("monthTo");
+					String dateToStr = request.getParameter("dateTo");
+					
+					int yearFrom = Integer.parseInt(yearFromStr);
+					int monthFrom = Integer.parseInt(monthFromStr);
+					int dateFrom = Integer.parseInt(dateFromStr);
+					
+					int yearTo = Integer.parseInt(yearToStr);
+					int monthTo = Integer.parseInt(monthToStr);
+					int dateTo =  Integer.parseInt(dateToStr);
+						
+					Calendar from = Calendar.getInstance();
+					from.set(yearFrom,monthFrom,dateFrom);
+					Calendar to = Calendar.getInstance();
+					to.set(yearTo,monthTo,dateTo);
+					to.add(Calendar.DATE,1);
+					
+					blogList = BlogManager.getByDate(username,from,to,session);
+					
+					
 				}
 				
 				//TODO Do something like paging when the number of blog entries returned is large
@@ -262,8 +298,6 @@ import org.apache.jackrabbit.servlet.ServletRepository;
 		   
 		      
 	   }
-	   
-	   
-
-	}   	  	    
+	  
+	}   	
 }

@@ -16,17 +16,29 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.NamespaceException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.apache.jackrabbit.api.JackrabbitNodeTypeManager;
+import org.apache.jackrabbit.core.NamespaceRegistryImpl;
+import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
 import org.apache.jackrabbit.demo.blog.exception.*;
+import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
+import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 
 /**
  * <code>UserManager</code> handles the management of user nodes.
@@ -71,6 +83,53 @@ public class UserManager {
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	
+	public void addUserOCM (User user) {
+		
+
+        try {
+			
+	        NamespaceRegistryImpl nsReg = (NamespaceRegistryImpl)session.getWorkspace().getNamespaceRegistry();
+	        nsReg.safeRegisterNamespace("ocm","http://jackrabbit.apache.org/ocm");
+	
+    		String[] mappingFiles = {"D:\\Development\\gsoc\\jackrabbit-jcr-demo\\jackrabbit-jcr-demo\\conf\\mapping.xml"};
+    		ObjectContentManager objectContentManager = new ObjectContentManagerImpl(session, mappingFiles);
+    		
+	        NodeTypeManagerImpl ntTypeMgr = (NodeTypeManagerImpl) session.getWorkspace().getNodeTypeManager();
+	        
+	        File nodeType = new File("D:\\Development\\gsoc\\jackrabbit-jcr-demo\\jackrabbit-jcr-demo\\conf\\custom_nodetypes.xml");
+	        FileInputStream nodeTypeStream;
+			try {
+				nodeTypeStream = new FileInputStream(nodeType);
+				ntTypeMgr.registerNodeTypes(nodeTypeStream,JackrabbitNodeTypeManager.TEXT_XML,true);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	        // Registors the custom node types and namespaces
+	        
+    			
+    		user.setPath("/blogRoot/"+user.getUsername());
+    		
+    		objectContentManager.insert(user);
+    		objectContentManager.save();
+       
+        } catch (NamespaceException e) {
+			e.printStackTrace();
+		} catch (UnsupportedRepositoryOperationException e) {
+
+		} catch (AccessDeniedException e) {
+
+		} catch (RepositoryException e) {
+
+		}
+
 	}
 	
 	/**
