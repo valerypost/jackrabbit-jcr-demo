@@ -25,6 +25,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.ValueFactory;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -79,6 +80,8 @@ public class BlogManager {
 	        	Node monthNode;
 	        	// Node to hold the blog entry to be added
 	        	Node blogEntryNode;
+	        	// Holds the name of the blog entry node
+	        	String nodeName;
 	        	
 	        	// createdOn property of the blog entry is set to the current time. 
 	    		Calendar calendar = Calendar.getInstance();
@@ -99,8 +102,16 @@ public class BlogManager {
 	    			monthNode = yearNode.addNode(month, "nt:folder");
 	    		}
 	    		
+	    		
+	    		if(monthNode.hasNode(title)) {
+	    			
+	    			nodeName = createUniqueName(title,monthNode);
+	    		} else {
+	    			nodeName = title;
+	    		}
+	    		
 	    		// creates a blog entry under the current month
-	    		blogEntryNode = monthNode.addNode(title, "blog:blogEntry");
+	    		blogEntryNode = monthNode.addNode(nodeName, "blog:blogEntry");
 	    		blogEntryNode.setProperty("blog:title", title);
 	    		blogEntryNode.setProperty("blog:content", content);
 	    		Value date = ValueFactoryImpl.getInstance().createValue(Calendar.getInstance());
@@ -144,13 +155,7 @@ public class BlogManager {
 	        ArrayList<BlogEntry> blogEntryList = new ArrayList<BlogEntry>();         
 	        while(iter.hasNext()) {
 	        	Node  blogEntryNode = iter.nextNode();
-	        	BlogEntry blogEntry = new BlogEntry();
-	        	blogEntry.setTitle(blogEntryNode.getProperty("blog:title").getString());
-	        	blogEntry.setContent(blogEntryNode.getProperty("blog:content").getString());
-	        	blogEntry.setCreatedOn(blogEntryNode.getProperty("blog:created").getDate());
-	        	blogEntry.setUUID(blogEntryNode.getUUID());  
-	        	blogEntry.setUser(username); 	    
-	        	
+	        	BlogEntry blogEntry = mapBlogEntry(blogEntryNode);
 	        	blogEntryList.add(blogEntry);
 	        }
 	        
@@ -166,7 +171,38 @@ public class BlogManager {
 	
 	public static ArrayList<BlogEntry> getByDate(String username, Calendar from, Calendar to, Session session ) {
 		
-		return null;
+		try {
+			
+			// Aquire an QueryManager from the current JCR session
+			QueryManager queryMgr = session.getWorkspace().getQueryManager();
+			
+			ValueFactory factory = session.getValueFactory();
+			String iso8601From = factory.createValue(from).getString();
+			String iso8601To   = factory.createValue(to).getString();
+			
+			// XPath query to retrive all blog entries of the current user in the descending order by the created date
+			String xPath ="/jcr:root/blogRoot//*[@blog:created > xs:dateTime('"+ iso8601From +"') and @blog:created < xs:dateTime('"+ iso8601To +"') ]" +
+					"order by @blog:created descending";
+	        Query query = queryMgr.createQuery(xPath,Query.XPATH);
+	        
+	        QueryResult queryResult = query.execute();
+	        NodeIterator iter = queryResult.getNodes();  
+	        
+	        // Create an ArrayList of blog entries of the user 
+	        ArrayList<BlogEntry> blogEntryList = new ArrayList<BlogEntry>();         
+	        while(iter.hasNext()) {
+	        	Node  blogEntryNode = iter.nextNode();
+	        	BlogEntry blogEntry = mapBlogEntry(blogEntryNode);
+	        	blogEntryList.add(blogEntry); 	
+	        }
+	        
+	        return blogEntryList;
+        
+        
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public static ArrayList<BlogEntry> getByContent(String content,Session session){
@@ -186,13 +222,8 @@ public class BlogManager {
 	        ArrayList<BlogEntry> blogEntryList = new ArrayList<BlogEntry>();         
 	        while(iter.hasNext()) {
 	        	Node  blogEntryNode = iter.nextNode();
-	        	BlogEntry blogEntry = new BlogEntry();
-	        	blogEntry.setTitle(blogEntryNode.getProperty("blog:title").getString());
-	        	blogEntry.setContent(blogEntryNode.getProperty("blog:content").getString());
-	        	blogEntry.setCreatedOn(blogEntryNode.getProperty("blog:created").getDate());
-	        	blogEntry.setUser(blogEntryNode.getParent().getParent().getParent().getName());
-	        	blogEntry.setUUID(blogEntryNode.getUUID()); 
-	        	blogEntryList.add(blogEntry);
+	        	BlogEntry blogEntry = mapBlogEntry(blogEntryNode);
+	        	blogEntryList.add(blogEntry); 	
 	        }
 	        
 	        return blogEntryList;
@@ -209,7 +240,12 @@ public class BlogManager {
 		try {
 			Node blogEntryNode = session.getNodeByUUID(UUID);
 			Node userNode = (Node)session.getItem("/blogRoot/"+username);	
-			Node commentNode =blogEntryNode.addNode("comment","blog:comment");
+			
+			// Create a unique name for comment node
+			// BlogEntry node which inherrits from nt:folder doesn't allow same name siblings
+			String unique = createUniqueName("comment",blogEntryNode);
+			
+			Node commentNode =blogEntryNode.addNode(unique,"blog:comment");
 			
 			commentNode.setProperty("blog:content",comment);
 			commentNode.setProperty("blog:commenter", userNode.getUUID());
@@ -222,6 +258,46 @@ public class BlogManager {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private static BlogEntry mapBlogEntry(Node blogEntryNode) throws RepositoryException {
+		
+		BlogEntry blogEntry = new BlogEntry();
+    	
+		blogEntry.setTitle(blogEntryNode.getProperty("blog:title").getString());
+    	blogEntry.setContent(blogEntryNode.getProperty("blog:content").getString());
+    	blogEntry.setCreatedOn(blogEntryNode.getProperty("blog:created").getDate());
+    	blogEntry.setUser(blogEntryNode.getParent().getParent().getParent().getName());
+    	blogEntry.setUUID(blogEntryNode.getUUID()); 
+    	blogEntry.setHasImage(blogEntryNode.hasNode("image"));
+    	
+    	NodeIterator commentIter = blogEntryNode.getNodes("comment*");
+    	
+    	while (commentIter.hasNext()) {
+    		Node commentNode = commentIter.nextNode();
+    		Comment comment = new Comment();
+    		comment.setContent(commentNode.getProperty("blog:content").getString());
+    		String commenterUUID = commentNode.getProperty("blog:commenter").getString(); 
+    		comment.setCommenter(commentNode.getSession().getNodeByUUID(commenterUUID).getName());
+    		
+    		blogEntry.addComment(comment);
+    	}
+    	
+    	return blogEntry;
+	}
+	
+	
+	private static String createUniqueName(String name, Node node) throws RepositoryException {
+		
+		String unique;
+		int i = 0;	
+
+		do {
+			unique = name + (i++);
+		} while (node.hasNode(unique));
+		
+		return unique;
+
 	}
 
 }

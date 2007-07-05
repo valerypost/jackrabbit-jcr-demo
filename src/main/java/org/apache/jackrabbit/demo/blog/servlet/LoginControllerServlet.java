@@ -87,6 +87,7 @@ public class LoginControllerServlet extends javax.servlet.http.HttpServlet imple
 					
 					// Check whether the authentication successful
 					if(UserManager.login(username,password,session)) {
+											
 						
 						// set the two attributes auth and usernames in the session to keep the authentication state
 						request.getSession().setAttribute("auth", true);
@@ -103,7 +104,7 @@ public class LoginControllerServlet extends javax.servlet.http.HttpServlet imple
 						request.setAttribute("msgTitle", "Authentication Failed");
 						request.setAttribute("msgBody", "Username or password is incorrect. Please recheck the password and try to log in again");
 						request.setAttribute("urlText", "go back to login page");
-						request.setAttribute("url","/jackrabbit-jcr-demo/index.html");	
+						request.setAttribute("url","/jackrabbit-jcr-demo/index.jsp");	
 						
 			            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
 			            requestDispatcher.forward(request, response);
@@ -128,7 +129,7 @@ public class LoginControllerServlet extends javax.servlet.http.HttpServlet imple
 			request.setAttribute("msgTitle", "Logout");
 			request.setAttribute("msgBody", "You have been successfully log out from the system");
 			request.setAttribute("urlText", "go back to login page");
-			request.setAttribute("url","/jackrabbit-jcr-demo/index.html");	
+			request.setAttribute("url","/jackrabbit-jcr-demo/blog/index.jsp");	
 			
             RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
             requestDispatcher.forward(request, response);

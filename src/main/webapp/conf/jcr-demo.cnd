@@ -9,7 +9,7 @@
 
 [blog:comment] > nt:hierarchyNode
 - blog:content (string) mandatory primary
-- blog:commenter (reference ) mandatory  < blog:user
+- blog:commenter (reference) mandatory  < blog:user
 
 [blog:blogEntry] > nt:folder, mix:referenceable
 - blog:title (string) mandatory primary

@@ -81,6 +81,22 @@
    	<servlet-name>BlogControllerServlet</servlet-name>
    	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.BlogControllerServlet</servlet-class>
    </servlet>
+   <servlet>
+   	<description> Handles adding multipart encoded blog entries </description>
+   	<display-name>MultipartBlogController</display-name>
+   	<servlet-name>MultipartBlogController</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.MultipartBlogController</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	Servlet that exposes the images in the repository to web applictions</description>
+   	<display-name>
+   	ImageViewerServlet</display-name>
+   	<servlet-name>ImageViewerServlet</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.ImageViewerServlet</servlet-class>
+   </servlet>
 
     <!-- ====================================================================== -->
     <!--                  S E R V L E T   M A P P I N G                         -->
@@ -97,6 +113,14 @@
    <servlet-mapping>
    	<servlet-name>BlogControllerServlet</servlet-name>
    	<url-pattern>/BlogController/*</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+   	<servlet-name>MultipartBlogController</servlet-name>
+   	<url-pattern>/MultipartBlogController/*</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+   	<servlet-name>ImageViewerServlet</servlet-name>
+   	<url-pattern>/repo/images/*</url-pattern>
    </servlet-mapping>
 
     <!-- ====================================================================== -->
@@ -117,7 +141,7 @@
     <!--                    W E L C O M E   F I L E S                           -->
     <!-- ====================================================================== -->
     <welcome-file-list>
-      <welcome-file>index.html</welcome-file>
+      <welcome-file>/blog/index.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>

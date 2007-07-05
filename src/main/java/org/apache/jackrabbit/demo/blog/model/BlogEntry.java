@@ -16,6 +16,7 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -41,6 +42,10 @@ public class BlogEntry {
 	private Calendar updatedOn; 
 	//UUID of blog entry
 	private String UUID;
+	//Boolean which tells whether the blog entry has an image 
+	private boolean hasImage;
+	
+	private ArrayList<Comment> commentList = new ArrayList<Comment>();
 	
 	
 	public BlogEntry() {
@@ -160,6 +165,28 @@ public class BlogEntry {
 	public void setUUID(String uuid) {
 		UUID = uuid;
 	}
+	
+	public void addComment(Comment comment) {
+		commentList.add(comment);
+	}
+
+	public ArrayList<Comment> getCommentList() {
+		return commentList;
+	}
+
+	public void setCommentList(ArrayList<Comment> commentList) {
+		this.commentList = commentList;
+	}
+
+	public boolean isHasImage() {
+		return hasImage;
+	}
+
+	public void setHasImage(boolean hasImage) {
+		this.hasImage = hasImage;
+	}
+	
+
 	
 	
 	
