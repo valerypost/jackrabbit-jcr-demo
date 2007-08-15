@@ -68,8 +68,17 @@
     <!-- ====================================================================== --> 
    <servlet>
     <servlet-name>LoginController</servlet-name>
-   	<description> This servlet is used to handle user log in and log out</description>
+   	<description> This servlet is used to handle user log in </description>
    	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.LoginControllerServlet</servlet-class>
+   </servlet>
+   
+    <!-- ====================================================================== -->
+    <!--                    L O G O U T	  S E R V L E T                         -->
+    <!-- ====================================================================== --> 
+   <servlet>
+    <servlet-name>LogoutController</servlet-name>
+   	<description> This servlet is used to handle user log out</description>
+   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.LogoutControllerServlet</servlet-class>
    </servlet>
    
     <!-- ====================================================================== -->
@@ -77,25 +86,64 @@
     <!-- ====================================================================== --> 
    
    <servlet>
-   	<description> Handles managemenet of blog entries like adding, retriving, deleting</description>
-   	<servlet-name>BlogControllerServlet</servlet-name>
-   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.BlogControllerServlet</servlet-class>
-   </servlet>
-   <servlet>
    	<description> Handles adding multipart encoded blog entries </description>
-   	<display-name>MultipartBlogController</display-name>
-   	<servlet-name>MultipartBlogController</servlet-name>
+   	<display-name>BlogAddControllerServlet</display-name>
+   	<servlet-name>BlogAddControllerServlet</servlet-name>
    	<servlet-class>
-   	org.apache.jackrabbit.demo.blog.servlet.MultipartBlogController</servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.BlogAddControllerServlet</servlet-class>
    </servlet>
    <servlet>
    	<description>
    	Servlet that exposes the images in the repository to web applictions</description>
    	<display-name>
-   	ImageViewerServlet</display-name>
-   	<servlet-name>ImageViewerServlet</servlet-name>
+   	BinaryContentViewerServlet</display-name>
+   	<servlet-name>BinaryContentViewerServlet</servlet-name>
+   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.BinaryContentViewerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>BlogViewControllerServlet</display-name>
+   	<servlet-name>BlogViewControllerServlet</servlet-name>
+   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.BlogViewControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>BlogSearchControllerServlet</display-name>
+   	<servlet-name>BlogSearchControllerServlet</servlet-name>
+   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.BlogSearchControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>BlogCommentControllerServlet</display-name>
+   	<servlet-name>BlogCommentControllerServlet</servlet-name>
+   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.BlogCommentControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>BlogRemoveControllerServlet</display-name>
+   	<servlet-name>BlogRemoveControllerServlet</servlet-name>
+   	<servlet-class>org.apache.jackrabbit.demo.blog.servlet.BlogRemoveControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>
+   	BlogRateControllerServlet</display-name>
+   	<servlet-name>BlogRateControllerServlet</servlet-name>
    	<servlet-class>
-   	org.apache.jackrabbit.demo.blog.servlet.ImageViewerServlet</servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.BlogRateControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>AtomGeneratorServlet</display-name>
+   	<servlet-name>AtomGeneratorServlet</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.AtomGeneratorServlet</servlet-class>
    </servlet>
 
     <!-- ====================================================================== -->
@@ -103,25 +151,45 @@
     <!-- ====================================================================== -->
 
    <servlet-mapping>
-      <servlet-name>UserController</servlet-name>
-      <url-pattern>/UserController/*</url-pattern>
+   	<servlet-name>BlogAddControllerServlet</servlet-name>
+   	<url-pattern>/blog/add</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+   	<servlet-name>BinaryContentViewerServlet</servlet-name>
+   	<url-pattern>/repo/*</url-pattern>
    </servlet-mapping>
    <servlet-mapping>
    	<servlet-name>LoginController</servlet-name>
-   	<url-pattern>/LoginController/*</url-pattern>
+   	<url-pattern>/user/login</url-pattern>
    </servlet-mapping>
-   <servlet-mapping>
-   	<servlet-name>BlogControllerServlet</servlet-name>
-   	<url-pattern>/BlogController/*</url-pattern>
+      <servlet-mapping>
+   	<servlet-name>LogoutController</servlet-name>
+   	<url-pattern>/user/logout</url-pattern>
    </servlet-mapping>
-   <servlet-mapping>
-   	<servlet-name>MultipartBlogController</servlet-name>
-   	<url-pattern>/MultipartBlogController/*</url-pattern>
-   </servlet-mapping>
-   <servlet-mapping>
-   	<servlet-name>ImageViewerServlet</servlet-name>
-   	<url-pattern>/repo/images/*</url-pattern>
-   </servlet-mapping>
+    <servlet-mapping>
+      	<servlet-name>BlogViewControllerServlet</servlet-name>
+      	<url-pattern>/blog/view</url-pattern>
+      </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>BlogSearchControllerServlet</servlet-name>
+    	<url-pattern>/blog/search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>BlogCommentControllerServlet</servlet-name>
+    	<url-pattern>/blog/comment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>BlogRemoveControllerServlet</servlet-name>
+    	<url-pattern>/blog/remove</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>BlogRateControllerServlet</servlet-name>
+    	<url-pattern>/blog/rate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>AtomGeneratorServlet</servlet-name>
+    	<url-pattern>/blog/rss</url-pattern>
+    </servlet-mapping>
 
     <!-- ====================================================================== -->
     <!--                          TAG LIB DECLARATIONS                          -->

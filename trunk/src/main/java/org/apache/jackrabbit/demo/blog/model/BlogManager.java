@@ -114,7 +114,7 @@ public class BlogManager {
 	    		blogEntryNode = monthNode.addNode(nodeName, "blog:blogEntry");
 	    		blogEntryNode.setProperty("blog:title", title);
 	    		blogEntryNode.setProperty("blog:content", content);
-	    		Value date = ValueFactoryImpl.getInstance().createValue(Calendar.getInstance());
+	    		Value date = session.getValueFactory().createValue(Calendar.getInstance());
 	    		blogEntryNode.setProperty("blog:created",date );
 	    		
 	    		// persist the changes done
@@ -235,6 +235,20 @@ public class BlogManager {
 		}
 	}
 	
+	public static  void removeBlogEntry(String UUID,String username,Session session){
+		try {
+			Node blogEntryNode = session.getNodeByUUID(UUID);
+			blogEntryNode.remove();
+			session.save();
+			
+		} catch (ItemNotFoundException e) {
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public static void addComment(String UUID, String comment,String username, Session session){
 		
 		try {
@@ -260,6 +274,25 @@ public class BlogManager {
 		
 	}
 	
+	public static void rateBlogEntry(String UUID, int rank,String username, Session session){
+		
+		try {
+			Node blogEntryNode = session.getNodeByUUID(UUID);
+			long currentRank = blogEntryNode.getProperty("blog:rate").getLong();
+			long newRank = ( currentRank + rank ) / 2;
+			blogEntryNode.setProperty("blog:rate", newRank);
+			session.save();
+			
+		} catch (ItemNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 	private static BlogEntry mapBlogEntry(Node blogEntryNode) throws RepositoryException {
 		
 		BlogEntry blogEntry = new BlogEntry();
@@ -268,6 +301,7 @@ public class BlogManager {
     	blogEntry.setContent(blogEntryNode.getProperty("blog:content").getString());
     	blogEntry.setCreatedOn(blogEntryNode.getProperty("blog:created").getDate());
     	blogEntry.setUser(blogEntryNode.getParent().getParent().getParent().getName());
+    	blogEntry.setRate(blogEntryNode.getProperty("blog:rate").getLong());
     	blogEntry.setUUID(blogEntryNode.getUUID()); 
     	blogEntry.setHasImage(blogEntryNode.hasNode("image"));
     	
@@ -285,7 +319,6 @@ public class BlogManager {
     	
     	return blogEntry;
 	}
-	
 	
 	private static String createUniqueName(String name, Node node) throws RepositoryException {
 		

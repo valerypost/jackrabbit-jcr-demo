@@ -1,23 +1,23 @@
 
 	function addComment(itemID){
 		var tt =itemID;
-		var textObject = document.getElementById(itemID);
+		var textObject = document.getElementById(itemID+'C');
 		
 		textObject.innerHTML = 
-		"<div id='commentMessage"+itemID+"' align='right'> </div>                                                                  " +
-        "<form action='/jackrabbit-jcr-demo/BlogController/' method='post' onsubmit='return validateForm(this,"+itemID+");'>       " +
-        "  <br/> Leave your comment below <br/>                                                              " + 
-        "  <textarea cols='42' rows='4'	  name='comment'></textarea>			                         " +
-        "  <input name='action' type='hidden' id='action' value='comment'>                                   " +
-        "  <input name='UUID' type='hidden' id='UUID' value=" + itemID + ">                                  " +
-        "  <br/> <input type='submit' name='Button' value='Save'>                                            " +
-		"  <input type='reset' name='Submit2' value='Clear'>                                                 " +
-		"  <input type='button' name='Cancel' value='Cancel' onClick=\"removeComment('"+itemID+"');\"> " +
+		"<div id='commentMessage"+itemID+"' align='right'> </div>                                                              " +
+        "<form action='/jackrabbit-jcr-demo/blog/comment' method='GET' onsubmit='return validateForm(this,"+itemID+");'>       " +
+        "  <br/> Leave your comment below <br/>                                                                                " + 
+        "  <textarea cols='42' rows='4'	  name='comment'></textarea>			                                               " +
+        "  <input name='action' type='hidden' id='action' value='comment'>                                                     " +
+        "  <input name='UUID' type='hidden' id='UUID' value=" + itemID + ">                                                    " +
+        "  <br/> <input type='submit' name='Button' value='Save'>                                                              " +
+		"  <input type='reset' name='Submit2' value='Clear'>                                                                   " +
+		"  <input type='button' name='Cancel' value='Cancel' onClick=\"removeComment('"+itemID+"');\">                         " +
         " </form>";
 	}
 	
 	function  removeComment(itemID) {
-		var tt = itemID;
+		var tt = itemID+'C';
 		var textObject = document.getElementById(tt);
 		
 		textObject.innerHTML = 

@@ -22,21 +22,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Add a blog Entry</title>
-<link href="../css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
+<link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
+<body bgcolor="#5C91C1">
 	<table width="100%" height="100%" border="0">
 		<tr valign="top">
 			<td></td>
 	    	<td width="970" align="center">
 				<div id="tabs">
 					<ul>	
-						<li><a class="current" href="/jackrabbit-jcr-demo/BlogController?action=view">My Blog</a></li>
-						<li><a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
+						<li><a href="/jackrabbit-jcr-demo/blog/view">My Blog</a></li>
+						<li><a class="current" href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
 						<li><a href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp" >Search</a></li>
 						<li><a href="#" >Wiki</a></li>
-						<li><a href="/jackrabbit-jcr-demo/LoginController?action=logout" >Logout</a></li>
+						<li><a href="/jackrabbit-jcr-demo/user/logout" >Logout</a></li>
 					</ul>
 				</div>
 			</td>
@@ -51,7 +51,7 @@
             	<table>
             		<tr>
             			<td width="685" height="800" valign="top">
-					          <form action="/jackrabbit-jcr-demo/MultipartBlogController/" method="post" enctype="multipart/form-data">
+					          <form action="/jackrabbit-jcr-demo/blog/add" method="post" enctype="multipart/form-data">
 					        	<table width="100%" border="0">
 					         	 <tr bgcolor="#CCCCCC">
 					            	<td><div align="center">Add a blog entry </div></td>
@@ -70,6 +70,10 @@
 					              		 <tr>
 					                		<td>Image File  </td>
 					                		<td><input name="image" type="file" id="image" size="66" /></td>
+					              		 </tr>
+										 <tr>
+					                		<td>Video File  </td>
+					                		<td><input name="video" type="file" id="video" size="66" /></td>
 					              		 </tr>
 					            	</table>
 					              </td>
