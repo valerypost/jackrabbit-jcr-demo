@@ -36,7 +36,7 @@
 <!-- InstanceEndEditable -->
 </head>
 
-<body>
+<body bgcolor="#5C91C1">
 <table width="100%" height="100%" border="0">
   <tr valign="top">
     <td align="left"> <img src="/jackrabbit-jcr-demo/image/asf_logo.gif"/> </td>

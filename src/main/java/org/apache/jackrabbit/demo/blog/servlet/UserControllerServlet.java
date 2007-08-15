@@ -99,7 +99,7 @@ public class UserControllerServlet extends javax.servlet.http.HttpServlet implem
 					
 					// Creates a UserManager and add the user 
 					UserManager userMgr = new UserManager(session);
-					userMgr.addUserOCM(user);
+					userMgr.addUser(user);
 					
 					//set the attributes which are required by user messae page
 					request.setAttribute("msgTitle", "User Registration Successful ");
@@ -112,8 +112,8 @@ public class UserControllerServlet extends javax.servlet.http.HttpServlet implem
 		            requestDispatcher.forward(request, response);
 						
 					
-				//} catch (NonUniqueUsernameException e){
-				//	throw new ServletException("Username is not unique",e);
+				} catch (NonUniqueUsernameException e){
+					throw new ServletException("Username is not unique",e);
 				}catch (LoginException e) {
 					throw new ServletException("Failed to login to repository",e);
 				} catch (RepositoryException e) {

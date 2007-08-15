@@ -19,8 +19,11 @@ package org.apache.jackrabbit.demo.blog.servlet;
 import org.apache.jackrabbit.api.JackrabbitNodeTypeManager;
 import org.apache.jackrabbit.core.NamespaceRegistryImpl;
 import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
+import org.apache.jackrabbit.demo.blog.model.AlertManager;
 import org.apache.jackrabbit.servlet.ServletRepository;
 import javax.jcr.*;
+import javax.jcr.observation.Event;
+import javax.jcr.observation.ObservationManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
@@ -48,9 +51,9 @@ public class InitServlet extends HttpServlet {
     /**
      * JCR Session
      */
-    protected Session session = null;
-    
-	/**
+    protected static Session session = null;
+	
+    /**
      * This method does the initialization such as registoring namesspaces , custom node types and creating the node structure
      */	
     public void init() throws ServletException {
@@ -64,13 +67,16 @@ public class InitServlet extends HttpServlet {
             
             // Creates the basic node structure if not created
             createNodeStructure();
+            
+            // Register the event listener to listen to new comments event
+            registerListeners();
 
-            log("JACKRABBIT-JCR-DEMO initialized ...");
+            log("JACKRABBIT-JCR-DEMO: initialized ...");
             
         } catch (RepositoryException e) {
             throw new ServletException(e);
         } finally {
-            session.logout();
+           // session.logout();
         }
     }
     
@@ -97,11 +103,12 @@ public class InitServlet extends HttpServlet {
 	        ntTypeMgr.registerNodeTypes(inputStream,JackrabbitNodeTypeManager.TEXT_X_JCR_CND,true);
 	        
 	        // Register a namespace to be used with in the program
-	        // ex. for a username robert we can use demo:robert
+	        // ex. for a username "nandana" we can use demo:nandana
 	        NamespaceRegistryImpl nsReg = (NamespaceRegistryImpl)session.getWorkspace().getNamespaceRegistry();
 	        nsReg.safeRegisterNamespace("demo","http://code.google.com/p/jackrabbit-jcr-demo");
-	       
-
+	        
+	        log("JACKRABBIT-JCR-DEMO: Custom Node types registered  ...");
+	        
         } catch (RepositoryException e) {
             throw new ServletException( "Failed to registor node types", e);
         } catch (IOException e) {
@@ -134,11 +141,28 @@ public class InitServlet extends HttpServlet {
     		
     		session.save();
     		
+    		log("JACKRABBIT-JCR-DEMO: Node Structure created ...");
+    		
     	} catch (RepositoryException e) {
     		throw new ServletException( "Failed to create node structure ", e);
     	}
     	
     }
 
+    /**
+     * This method registers the listener <code> org.apache.jackrabbit.demo.blog.model.AlertManager </code> with the default
+     * workspace. This listener listens to events of adding new comments to blog entries.
+     * @throws RepositoryException if an error occur in the repository 
+     */
+    private void registerListeners() throws RepositoryException{
+    	
+    	Workspace ws = session.getWorkspace();
+    	ObservationManager observationMgr = ws.getObservationManager();
+	    AlertManager alertMgr = new AlertManager(repository);
+	    observationMgr.addEventListener(alertMgr,Event.NODE_ADDED,"/blogRoot",true,null,null, false);
+	    
+        log("JACKRABBIT-JCR-DEMO: Listeners registered ...");
+	    
+    }
 
 }

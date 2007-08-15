@@ -24,18 +24,18 @@
 <link href="../css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
+<body bgcolor="#5C91C1">
 	<table width="100%" height="100%" border="0">
 		<tr valign="top">
 			<td></td>
 	    	<td width="970" align="center">
 				<div id="tabs">
 					<ul>	
-						<li><a class="current" href="/jackrabbit-jcr-demo/BlogController?action=view">My Blog</a></li>
+						<li><a href="/jackrabbit-jcr-demo/blog/view">My Blog</a></li>
 						<li><a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
-						<li><a href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp" >Search</a></li>
+						<li><a class="current" href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp" >Search</a></li>
 						<li><a href="#" >Wiki</a></li>
-						<li><a href="/jackrabbit-jcr-demo/LoginController?action=logout" >Logout</a></li>
+						<li><a href="/jackrabbit-jcr-demo/user/logout" >Logout</a></li>
 					</ul>
 				</div>
 			</td>
@@ -50,7 +50,7 @@
             	<table>
             		<tr>
             			<td width="685" height="800" valign="top">
-						    <form method="post" action="/jackrabbit-jcr-demo/BlogController/">
+						    <form method="post" action="/jackrabbit-jcr-demo/blog/search">
 			            		<table width="100%" border="0" class="plainborder-ash">
 			              			<tr>
 				                		<td width="25%">Search by Username</td>
@@ -70,7 +70,7 @@
 							</form>
 							<br/>
 							
-							<form method="post" action="/jackrabbit-jcr-demo/BlogController/">
+							<form method="post" action="/jackrabbit-jcr-demo/blog/search">
 				            	<table width="100%" border="0" class="plainborder-ash">
 				              		<tr>
 				                		<td width="25%">Search by Date </td>
@@ -135,7 +135,7 @@
 										    <select name="yearTo">
 										      <option value="2007">2007</option>
 										      <option value="2008">2008</option>
-										      <option value="200">2009</option>
+										      <option value="2009">2009</option>
 								            </select>
 				&nbsp;
 				                		  <select name="monthTo">
@@ -204,7 +204,7 @@
 							</form>
 							<br/> 
 
-			 				<form method="post" action="/jackrabbit-jcr-demo/BlogController/">
+			 				<form method="post" action="/jackrabbit-jcr-demo/blog/search">
             					<table width="100%" border="0" class="plainborder-ash">
               						<tr>
 										<td width="25%">Search by Content </td>

@@ -47,18 +47,18 @@ input.login {
 }
 
 /* horizontal tabbed menu */	
-#tabs { background: #fff url(../images/bigbox.gif) no-repeat top left; color: #000;  height: 64px; text-align: center; padding: 0 0 0 210px; }
+#tabs { background: #5C91C1 url(../images/bigbox.gif) no-repeat top left; color: #000;  height: 64px; text-align: center; padding: 0 0 0 210px; }
 #tabs li { display: inline; height: 45px; }
-#tabs li a { float: left; background: #fff url(../images/barbg.gif) no-repeat; color: #808080; padding: 7px 0; width: 82px; text-align: center; font-weight: bold; text-decoration: none; }
-#tabs li a:hover { background: #fff url(../images/barcurrent.gif) no-repeat; color: #000; }	
-#tabs li a.current { background: #fff url(../images/barcurrent.gif) no-repeat; color: #2C71AE; }
-#tabs li a.inactive { background: #fff url(../images/barinactive.gif) no-repeat; color: #000; }	
+#tabs li a { float: left; background: #5C91C1 url(../images/barbg.gif) no-repeat; color: #808080; padding: 7px 0; width: 82px; text-align: center; font-weight: bold; text-decoration: none; }
+#tabs li a:hover { background: #5C91C1 url(../images/barcurrent.gif) no-repeat; color: #000; }	
+#tabs li a.current { background: #5C91C1 url(../images/barcurrent.gif) no-repeat; color: #2C71AE; }
+#tabs li a.inactive { background: #5C91C1 url(../images/barinactive.gif) no-repeat; color: #000; }	
 
 
 .lt {
 	height: 10px;
 	background: #6E6E6E url(../images/lt.gif) no-repeat;
-	color: #FFF;
+	color: #5C91C1;
 }
 
 .lbox {

@@ -16,25 +16,13 @@
  * limitations under the License.
  */
 %>
-<%@ page contentType="text/html; charset=iso-8859-1" 
-		language="java" 
-		errorPage="" 
-        buffer="8kb"
-%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/page.dwt" codeOutsideHTMLIsLocked="false" -->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<!-- InstanceBeginEditable name="doctitle" -->
-<title>View All Users</title>
-<!-- InstanceEndEditable -->
-<!-- InstanceBeginEditable name="head" -->
-<%@ taglib uri='http://java.sun.com/jstl/core' prefix='c' %>
-<!-- InstanceEndEditable -->
+<title>User Registration</title>
 </head>
-
-<body bgcolor="#5C91C1">
+<body>
 <table width="100%" height="100%" border="0">
   <tr valign="top">
     <td align="left"> <img src="/jackrabbit-jcr-demo/image/asf_logo.gif"/> </td>
@@ -46,40 +34,50 @@
 
       <tr>
         <td width="5"></td>
-		<!-- InstanceBeginEditable name="Left" -->
-        <td width="100" bgcolor="#CCCCCC"></td>
-		<!-- InstanceEndEditable -->
+        <td width="100" bgcolor="#CCCCCC" ></td>
         <td width="5"></td>
-		<!-- InstanceBeginEditable name="Middle" -->
-        <td width="80%">
-		<table width="100%" border="1" cellpadding="5">
+        <td  height="800" valign="top" width="80%">
+        <form method="post" action="/jackrabbit-jcr-demo/UserController/">
+        <table width="100%" border="1">
           <tr>
-            <td><div align="center">User Administration 
-              - View All users </div></td>
-          </tr>
+            <td><div align="center">User Registration </div></td>
+          </tr>  
 		  <tr>
-            <td><table width="100%" border="1">
-              <tr bgcolor="#CCCCCC">
-                <td width="25%">Username</td>
-                <td width="25%">Nickname</td>
-                <td width="50%">Email</td>
+            <td><table width="100%" border="0">
+              <tr>
+                <td width="17%">Username</td>
+                <td width="83%"><input name="username" type="text" id="username" size="50"/></td>
               </tr>
-              <c:forEach var="user" items="${userList}">
-              	<tr bgcolor="#D6F1F5">
-               		 <td> ${user.username }</td>
-               		 <td> ${user.nickname }</td>
-               		 <td> ${user.email }</td>
-               </tr>
-             </c:forEach>                      
+              <tr>
+                <td>Nickname</td>
+                <td><input name="nickname" type="text" id="nickname" size="50" /></td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td><input name="email" type="text" id="email" size="50" /></td>
+              </tr>
+              <tr>
+                <td>Password</td>
+                <td><input name="password" type="password" id="password" size="50" /></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
             </table></td>
           </tr>
+          <tr>
+            <td><div align="center">
+              <input name="action" type="hidden" id="action" value="add" />
+              <input type="submit" name="Submit" value="Save" />
+			  <input type="reset" name="Submit2" value="Clear" />
+            </div></td>
+          </tr>  
         </table>
-		</td>
-		<!-- InstanceEndEditable -->
+        </form>        
+        </td>
         <td width="5"></td>
-		<!-- InstanceBeginEditable name="Right" -->
 		<td width="100" bgcolor="#CCCCCC"></td>
-		<!-- InstanceEndEditable -->
 		<td width="5"></td>
       </tr>
     </table>
@@ -90,4 +88,4 @@
   </tr>
 </table>
 </body>
-<!-- InstanceEnd --></html>
+</html>

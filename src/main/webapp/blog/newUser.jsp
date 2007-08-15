@@ -16,49 +16,63 @@
  * limitations under the License.
  */
 %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>User Registration</title>
+<title>Add a blog Entry</title>
+<link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-<table width="100%" height="100%" border="0">
-  <tr valign="top">
-    <td align="left"> <img src="/jackrabbit-jcr-demo/image/asf_logo.gif"/> </td>
-	<td align="right"> <img src="/jackrabbit-jcr-demo/image/jackrabbitlogo.gif" /> </td>
-  </tr>
-  <tr>
-    <td valign="top" colspan="2">
-	<table width="100%" height="100%" border="0">
 
-      <tr>
-        <td width="5"></td>
-        <td width="100" bgcolor="#CCCCCC" ></td>
-        <td width="5"></td>
-        <td  height="800" valign="top" width="80%">
+<body bgcolor="#5C91C1">
+	<table width="100%" height="100%" border="0">
+		<tr valign="top">
+			<td></td>
+	    	<td width="970" align="center">
+				<div id="tabs">
+					<ul>	
+						<li><a class="inactive" href="#">My Blog</a></li>
+						<li><a class="inactive" href="#">New Entry</a></li>
+						<li><a class="inactive" href="#" >Search</a></li>
+						<li><a class="inactive" href="#" >Wiki</a></li>
+						<li><a class="inactive" href="#" >Logout</a></li>
+					</ul>
+				</div>
+			</td>
+			<td></td>
+  		</tr> 
+		<tr>
+			<td  colspan="3" width="5"></td>
+		</tr>
+		<tr>
+		  	<td></td>
+            <td  width="970">
+            	<table>
+            		<tr>
+            			<td width="685" height="800" valign="top">
         <form method="post" action="/jackrabbit-jcr-demo/UserController/">
-        <table width="100%" border="1">
+        <table width="100%" bgcolor="#CCCCCC">
           <tr>
             <td><div align="center">User Registration </div></td>
           </tr>  
 		  <tr>
-            <td><table width="100%" border="0">
+            <td><table width="100%" bgcolor="#FFFFFF">
               <tr>
                 <td width="17%">Username</td>
-                <td width="83%"><input name="username" type="text" id="username" size="50"/></td>
+                <td width="83%"><input name="username" type="text" id="username" size="50" class="search"/></td>
               </tr>
               <tr>
                 <td>Nickname</td>
-                <td><input name="nickname" type="text" id="nickname" size="50" /></td>
+                <td><input name="nickname" type="text" id="nickname" size="50" class="search"/></td>
               </tr>
               <tr>
                 <td>Email</td>
-                <td><input name="email" type="text" id="email" size="50" /></td>
+                <td><input name="email" type="text" id="email" size="50" class="search"/></td>
               </tr>
               <tr>
                 <td>Password</td>
-                <td><input name="password" type="password" id="password" size="50" /></td>
+                <td><input name="password" type="password" id="password" size="50" class="search"/></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
@@ -70,18 +84,19 @@
             <td><div align="center">
               <input name="action" type="hidden" id="action" value="add" />
               <input type="submit" name="Submit" value="Save" />
-			  <input type="reset" name="Submit2" value="Clear" />
+			  <input type="reset" name="Clear" value="Clear" />
             </div></td>
           </tr>  
         </table>
-        </form>        
-        </td>
-        <td width="5"></td>
-		<td width="100" bgcolor="#CCCCCC"></td>
-		<td width="5"></td>
-      </tr>
-    </table>
-	</td>
+        </form>     
+ 						</td>
+		 				<td width="5"></td> 
+						<td width="275" bgcolor="#CCCCCC"></td>
+						<td width="5"></td>
+					</tr>
+			  </table>
+    </td>
+	<td></td>
   </tr>
   <tr valign="bottom">
     <td></td>
