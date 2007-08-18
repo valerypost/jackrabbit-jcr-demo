@@ -2,7 +2,7 @@
 
 = Introduction =
 
-When you using application specific node types, you have to register them in the workspace(?repository).
+When you using application specific node types and namespaces, you have to register them in the workspace(?repository).
 
 
 = Details =
