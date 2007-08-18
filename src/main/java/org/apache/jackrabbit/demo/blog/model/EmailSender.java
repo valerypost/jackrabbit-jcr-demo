@@ -1,50 +1,77 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.jackrabbit.demo.blog.model;
+
+import java.util.Date;
+import java.util.Properties;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.Transport;
+import javax.mail.URLName;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import com.sun.mail.pop3.POP3SSLStore;
 
 public class EmailSender {
 	
-/*    public boolean send(Message aMessage) {
+    public static void send(String title, String commentor, String email, Date date) {
+
         try {
-            String email = aMessage.getRecipient().getContactNo() + "@mms.dialog.lk";
-            Properties props = System.getProperties();
-            props.put(SystemConfig.getInstance().getStr("admin.messaging.mms.server"), SystemConfig.getInstance().getStr("admin.messaging.mms.host"));
+    	
+        	Properties props = System.getProperties();
+            props.put("mail.smtp.host", Constants.MAIL_SERVER);
             Session mailsession = Session.getDefaultInstance(props, null);
             javax.mail.Message message = new MimeMessage(mailsession);
 
-            message.setSubject(SystemConfig.getInstance().getStr("admin.messaging.mms.subject"));
+			message.setSubject("You blog entry is commented");
 
-            String fromNum = (aMessage.getSender().getContactNo() == null ? SystemConfig.getInstance().getStr("admin.messaging.mms.fromNumber") : aMessage
-                    .getSender().getContactNo());
-
-            message.setFrom(new InternetAddress("\"" + fromNum + "\"" + " <" + fromNum + "@mms.dialog.lk>"));
+            message.setFrom(new InternetAddress(Constants.FROM_EMAIL));
             message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(email));
 
+            DateFormat dateFormat   = new SimpleDateFormat("EEEEEE, yyyy.MM.dd 'at' HH:mm a");
+            String commentDate 		= dateFormat.format(date).toString();
+            
             MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText(aMessage.getSender().getNickName()+" says:"+aMessage.getBodyContent());
+            messageBodyPart.setText("You blog entry titled \""+title+"\" was commented by "+commentor+ " on "+commentDate);   
 
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
 
-            for(int i=0; i<aMessage.getAttachments().size(); i++) {
-                Attachment attachment = aMessage.getAttachments().get(i);
-                File att = new File("/MyDiary/view/upload/message/" + attachment.getImageID() + ".jpg");
-
-                if (att.exists()) {
-                    messageBodyPart = new MimeBodyPart();
-                    DataSource source = new FileDataSource(att);
-                    messageBodyPart.setDataHandler(new DataHandler(source));
-                    messageBodyPart.setFileName(att.getName());
-                    multipart.addBodyPart(messageBodyPart);
-                }
-            }
             message.setContent(multipart);
             Transport.send(message);
             
-            SystemLog.getInstance().getLogger("MY_DIARY_MMS").info(" [Sent] " + "MMS sent to " + aMessage.toString());
-            return true;
-        } catch (Exception e) {
-            SystemLog.getInstance().getLogger("MY_DIARY_MMS").error(" Errr sending MMS,"+aMessage.toString(),e);
-            return false;
-        }
-    }*/
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+    }
+
+   public static void main(String args[]) {
+	   
+	   Constants.MAIL_SERVER = "cse.mrt.ac.lk";
+	   Constants.FROM_EMAIL = "nandana@cse.mrt.ac.lk";
+	   send("title","me","nandana.cse@gmail.com", new Date());
+   }
 
 }

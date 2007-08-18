@@ -38,6 +38,14 @@
   <!-- jsp tag-lib declarations -->
   <%@ taglib uri='http://java.sun.com/jstl/core' prefix='c' %>
   <%@ taglib uri='http://java.sun.com/jsp/jstl/fmt' prefix='fmt' %>
+  
+  <!-- Atom syndication -->
+  <link rel="alternate" type="application/atom+xml"title="Recent blog entries in Atom" 
+   <c:choose>
+	<c:when test="${userUUID eq null}"> href="/jackrabbit-jcr-demo/blog/atom/general/recent"</c:when>
+    <c:otherwise>href="/jackrabbit-jcr-demo/blog/atom/user/${userUUID}"</c:otherwise>
+  </c:choose>
+  />
  </head>
 
  <body bgcolor="#5C91C1">
@@ -50,7 +58,7 @@
 	   <li><a class="current" href="/jackrabbit-jcr-demo/blog/view">My Blog</a></li>
 	   <li><a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
 	   <li><a href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp" >Search</a></li>
-	   <li><a href="#" >Wiki</a></li>
+	   <li><a href="/jackrabbit-jcr-demo/wiki/view" >Wiki</a></li>
 	   <li><a href="/jackrabbit-jcr-demo/user/logout" >Logout</a></li>
 	  </ul>
 	 </div>
@@ -66,7 +74,7 @@
         <c:if test="${ownBlog eq true}">
 	     <div class="lt"></div>
 	     <div class="lbox">
-		  Welcome ${username}, 
+		  Welcome ${username} ,
 		  <h1 align="center"> Jackrabbit-jcr-demo </h1>
 	     </div>       
 	    </c:if>

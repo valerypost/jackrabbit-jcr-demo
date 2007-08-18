@@ -52,6 +52,26 @@
          <param-value>/conf/jcr-demo.cnd</param-value>
          <description> Path of the CND file which defines the custom node types used in jackrabbit-jcr-demo</description>
       </init-param>
+      <init-param>
+         <param-name>ocm.path</param-name>
+         <param-value>/conf/ocm.xml</param-value>
+         <description> Path of the XML file which defines the custom node types for jcr-mapping</description>
+      </init-param>
+      <init-param>
+         <param-name>constants.ocm.mapping_xml</param-name>
+         <param-value>/conf/mapping.xml</param-value>
+         <description> Path of the XML file which defines class descriptors for the node bean mapping</description>
+      </init-param>
+      <init-param>
+         <param-name>constants.mail.mail_server</param-name>
+         <param-value>cssdse.mrt.ac.lk</param-value>
+         <description>name or the ip address of the mail server used to send comment alert nortifications</description>
+      </init-param>
+      <init-param>
+         <param-name>constants.mail.from_email</param-name>
+         <param-value>nandana.cse@gmail.com</param-value>
+         <description>From address of the emails sent as comment alert nortifications</description>
+      </init-param>
     </servlet>
    
     <!-- ====================================================================== -->
@@ -145,50 +165,156 @@
    	<servlet-class>
    	org.apache.jackrabbit.demo.blog.servlet.AtomGeneratorServlet</servlet-class>
    </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>
+   	UserAddControllerServlet</display-name>
+   	<servlet-name>UserAddControllerServlet</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.UserAddControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>
+   	UserViewControllerServlet</display-name>
+   	<servlet-name>UserViewControllerServlet</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.UserViewControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>
+   	WikiViewControllerServlet</display-name>
+   	<servlet-name>WikiViewControllerServlet</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.WikiViewControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>
+   	WikiEditControllerServlet</display-name>
+   	<servlet-name>WikiEditControllerServlet</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.WikiEditControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>
+   	WikiSaveControllerServlet</display-name>
+   	<servlet-name>WikiSaveControllerServlet</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.WikiSaveControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>
+   	WikiChangesControllerServlet</display-name>
+   	<servlet-name>WikiChangesControllerServlet</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.WikiChangesControllerServlet</servlet-class>
+   </servlet>
+   <servlet>
+   	<description>
+   	</description>
+   	<display-name>
+   	BlogEntryViewController</display-name>
+   	<servlet-name>BlogEntryViewController</servlet-name>
+   	<servlet-class>
+   	org.apache.jackrabbit.demo.blog.servlet.BlogEntryViewController</servlet-class>
+   </servlet>
+    
+    <!-- ====================================================================== -->
+    <!--    S E R V L E T    M A P P I N G    U S E R    M A N A G E M E N T    -->
+    <!-- ====================================================================== -->
+    <servlet-mapping>
+    	<servlet-name>UserAddControllerServlet</servlet-name>
+    	<url-pattern>/user/add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+   		<servlet-name>LoginController</servlet-name>
+   		<url-pattern>/user/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+   		<servlet-name>LogoutController</servlet-name>
+   		<url-pattern>/user/logout</url-pattern>
+   	</servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>UserViewControllerServlet</servlet-name>
+    	<url-pattern>/user/view</url-pattern>
+    </servlet-mapping>
 
     <!-- ====================================================================== -->
-    <!--                  S E R V L E T   M A P P I N G                         -->
+    <!--    S E R V L E T    M A P P I N G    B L O G    M A N A G E M E N T    -->
     <!-- ====================================================================== -->
-
    <servlet-mapping>
    	<servlet-name>BlogAddControllerServlet</servlet-name>
    	<url-pattern>/blog/add</url-pattern>
    </servlet-mapping>
    <servlet-mapping>
+   <servlet-name>BlogViewControllerServlet</servlet-name>
+    <url-pattern>/blog/view</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>BlogEntryViewController</servlet-name>
+    <url-pattern>/blog/viewEntry</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>BlogSearchControllerServlet</servlet-name>
+    <url-pattern>/blog/search</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>BlogCommentControllerServlet</servlet-name>
+    <url-pattern>/blog/comment</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>BlogRemoveControllerServlet</servlet-name>
+    <url-pattern>/blog/remove</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>BlogRateControllerServlet</servlet-name>
+    <url-pattern>/blog/rate</url-pattern>
+   </servlet-mapping>
+    
+    <!-- ====================================================================== -->
+    <!--            S E R V L E T    M A P P I N G    W I K I                   -->
+    <!-- ====================================================================== -->
+    <servlet-mapping>
+    <servlet-name>WikiViewControllerServlet</servlet-name>
+    	<url-pattern>/wiki/view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>WikiEditControllerServlet</servlet-name>
+    	<url-pattern>/wiki/edit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>WikiSaveControllerServlet</servlet-name>
+    	<url-pattern>/wiki/save</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>WikiChangesControllerServlet</servlet-name>
+    	<url-pattern>/wiki/history</url-pattern>
+    </servlet-mapping>
+ 
+    <!-- ====================================================================== -->
+    <!--     S E R V L E T    M A P P I N G    B I N A R Y    C O N T E N T     -->
+    <!-- ====================================================================== -->
+   <servlet-mapping>
    	<servlet-name>BinaryContentViewerServlet</servlet-name>
    	<url-pattern>/repo/*</url-pattern>
    </servlet-mapping>
-   <servlet-mapping>
-   	<servlet-name>LoginController</servlet-name>
-   	<url-pattern>/user/login</url-pattern>
-   </servlet-mapping>
-      <servlet-mapping>
-   	<servlet-name>LogoutController</servlet-name>
-   	<url-pattern>/user/logout</url-pattern>
-   </servlet-mapping>
-    <servlet-mapping>
-      	<servlet-name>BlogViewControllerServlet</servlet-name>
-      	<url-pattern>/blog/view</url-pattern>
-      </servlet-mapping>
-    <servlet-mapping>
-    	<servlet-name>BlogSearchControllerServlet</servlet-name>
-    	<url-pattern>/blog/search</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-    	<servlet-name>BlogCommentControllerServlet</servlet-name>
-    	<url-pattern>/blog/comment</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-    	<servlet-name>BlogRemoveControllerServlet</servlet-name>
-    	<url-pattern>/blog/remove</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-    	<servlet-name>BlogRateControllerServlet</servlet-name>
-    	<url-pattern>/blog/rate</url-pattern>
-    </servlet-mapping>
+   
+    <!-- ====================================================================== -->
+    <!--   S E R V L E T    M A P P I N G    A T O M    S Y N D I C A T I O N   -->
+    <!-- ====================================================================== -->
     <servlet-mapping>
     	<servlet-name>AtomGeneratorServlet</servlet-name>
-    	<url-pattern>/blog/rss</url-pattern>
+    	<url-pattern>/blog/atom/*</url-pattern>
     </servlet-mapping>
 
     <!-- ====================================================================== -->

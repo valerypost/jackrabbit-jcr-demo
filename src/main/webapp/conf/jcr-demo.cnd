@@ -1,4 +1,5 @@
-<blog = 'http://jackrabbit.apache.org/jackrabbit-jcr-demo/1.0'>
+<blog = 'http://jackrabbit.apache.org/jackrabbit-jcr-demo/blog/1.0'>
+<wiki = 'http://jackrabbit.apache.org/jackrabbit-jcr-demo/wiki/1.0'>
 <mix = 'http://www.jcp.org/jcr/mix/1.0' >
 <nt = 'http://www.jcp.org/jcr/nt/1.0'>
 
@@ -18,3 +19,8 @@
 - blog:created (date)
 - blog:published (date)
 - blog:updated (date)
+
+[wiki:wikiPage] > mix:versionable, nt:hierarchyNode
+- wiki:title (string) mandatory primary
+- wiki:content (string) mandatory
+- wiki:changeNote (String) = 'empty page' autocreated

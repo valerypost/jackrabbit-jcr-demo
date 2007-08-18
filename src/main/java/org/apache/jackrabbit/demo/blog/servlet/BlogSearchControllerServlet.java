@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jackrabbit.demo.blog.exception.InvalidUserException;
 import org.apache.jackrabbit.demo.blog.model.BlogEntry;
 import org.apache.jackrabbit.demo.blog.model.BlogManager;
+import org.apache.jackrabbit.demo.blog.model.UserManager;
 
 /**
  * Servlet implementation class for Servlet: BlogSearchControllerServlet
@@ -70,7 +71,9 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 			if (type.trim().equals("ByName")) {
 				String searchName = request.getParameter("searchName");
 				blogList = BlogManager.getByUsername(searchName,session);
+				String uuid = UserManager.getUUID(searchName, session);
 				
+				request.setAttribute("user-uuid", uuid);
 				if (searchName.equals(username)) {
 					request.setAttribute("ownBlog",true);
 				}

@@ -16,11 +16,14 @@
  */
 package org.apache.jackrabbit.demo.blog.servlet;
 
+import org.apache.jackrabbit.demo.blog.model.Constants;
+
 import org.apache.jackrabbit.api.JackrabbitNodeTypeManager;
 import org.apache.jackrabbit.core.NamespaceRegistryImpl;
 import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
 import org.apache.jackrabbit.demo.blog.model.AlertManager;
 import org.apache.jackrabbit.servlet.ServletRepository;
+
 import javax.jcr.*;
 import javax.jcr.observation.Event;
 import javax.jcr.observation.ObservationManager;
@@ -62,6 +65,9 @@ public class InitServlet extends HttpServlet {
         	//login to repository and aquire a JCR session
         	session = repository.login(new SimpleCredentials("user", "password".toCharArray()));
         	
+        	
+        	initConstants();
+        	
         	// Register the custom node types from the CND file if not already registered 
             registerCustomNodeTypes();
             
@@ -90,22 +96,26 @@ public class InitServlet extends HttpServlet {
         
     	// location of the CND file is kept as a servelt init parameter in the web.xml
     	String cndPath = getInitParameter("cnd.path");
+    	String ocmPath = getInitParameter("ocm.path");
     	
     	try {
         		
     		Workspace ws = session.getWorkspace();
         	
-            // create CND reader from file with CND definitions
+    		NodeTypeManagerImpl ntTypeMgr = (NodeTypeManagerImpl)ws.getNodeTypeManager();
+    		
+    		//Registors the custom node types and namespaces
             InputStream inputStream = getServletContext().getResourceAsStream(cndPath);   
-	        NodeTypeManagerImpl ntTypeMgr = (NodeTypeManagerImpl)ws.getNodeTypeManager();
-	        
-	        // Registors the custom node types and namespaces
 	        ntTypeMgr.registerNodeTypes(inputStream,JackrabbitNodeTypeManager.TEXT_X_JCR_CND,true);
+
+	        InputStream nodeTypeStream = getServletContext().getResourceAsStream(ocmPath);
+			ntTypeMgr.registerNodeTypes(nodeTypeStream,JackrabbitNodeTypeManager.TEXT_XML,true);
 	        
 	        // Register a namespace to be used with in the program
 	        // ex. for a username "nandana" we can use demo:nandana
 	        NamespaceRegistryImpl nsReg = (NamespaceRegistryImpl)session.getWorkspace().getNamespaceRegistry();
 	        nsReg.safeRegisterNamespace("demo","http://code.google.com/p/jackrabbit-jcr-demo");
+	        nsReg.safeRegisterNamespace("ocm","http://jackrabbit.apache.org/ocm");
 	        
 	        log("JACKRABBIT-JCR-DEMO: Custom Node types registered  ...");
 	        
@@ -139,6 +149,16 @@ public class InitServlet extends HttpServlet {
     			rootNode.addNode("library","nt:folder");
     		}
     		
+    		if (!rootNode.hasNode("wiki")) {
+    			Node wiki = rootNode.addNode("wiki","nt:folder");
+    			Node frontPage = wiki.addNode("frontPage", "wiki:wikiPage");
+    			
+    			frontPage.setProperty("wiki:title", "Front Page");
+    			frontPage.setProperty("wiki:content","");	
+    			
+    			frontPage.save();
+    		}
+    		
     		session.save();
     		
     		log("JACKRABBIT-JCR-DEMO: Node Structure created ...");
@@ -164,5 +184,14 @@ public class InitServlet extends HttpServlet {
         log("JACKRABBIT-JCR-DEMO: Listeners registered ...");
 	    
     }
-
+    
+    private void initConstants() {
+    	Constants.OCM_MAPPPINGS = new String[]{getServletConfig().getServletContext().getRealPath("")+getInitParameter("constants.ocm.mapping_xml")};
+    
+    	Constants.MAIL_SERVER = getInitParameter("constants.mail.mail_server");
+    	Constants.FROM_EMAIL = getInitParameter("constants.mail.from_email");
+    
+    }
+    
+    
 }

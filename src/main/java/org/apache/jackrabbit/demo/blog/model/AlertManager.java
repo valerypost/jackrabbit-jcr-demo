@@ -16,6 +16,8 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
+import java.util.Date;
+
 import javax.jcr.observation.*;
 import javax.jcr.LoginException;
 import javax.jcr.Repository;
@@ -43,12 +45,19 @@ public class AlertManager implements EventListener {
 				String path =  event.getPath();
 				path = path.substring(1, path.length());
 				Node eventNode = rootNode.getNode(path);
-				System.out.println(path+","+eventNode.getPrimaryNodeType().getName());
 				
 				if (eventNode.getPrimaryNodeType().getName().equals("blog:comment")) {
+					
+					Node commentorNode = eventNode.getProperty("blog:commenter").getNode();
+					String commentor = commentorNode.getProperty("blog:nickname").getString();
+					
+					String title = eventNode.getParent().getProperty("blog:title").getString();
+					
 					Node userNode = eventNode.getParent().getParent().getParent().getParent();
 					String email = userNode.getProperty("blog:email").getString();
-					System.out.println(email);
+					
+					EmailSender.send(title, commentor, email, new Date());
+
 				}
 		
 				

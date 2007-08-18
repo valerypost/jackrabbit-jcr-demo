@@ -94,7 +94,7 @@ public class LoginControllerServlet extends javax.servlet.http.HttpServlet imple
 				request.setAttribute("msgTitle", "Authentication Failed");
 				request.setAttribute("msgBody", "Username or password is incorrect. Please recheck the password and try to log in again");
 				request.setAttribute("urlText", "go back to login page");
-				request.setAttribute("url","/jackrabbit-jcr-demo/index.jsp");	
+				request.setAttribute("url","/jackrabbit-jcr-demo/");	
 				
 	            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
 	            requestDispatcher.forward(request, response);

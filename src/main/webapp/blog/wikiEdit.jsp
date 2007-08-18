@@ -21,8 +21,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Add a blog Entry</title>
-<link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
+<title>${wikiPage.title} -- jcr-jackrabbit-demo -- wiki edit</title>
+  <!-- isEmpty java scripts -->
+  <script type="text/javascript" src="/jackrabbit-jcr-demo/scripts/isNotEmpty.js"></script>
+  <!-- jackrabbit-jcr-demo main css -->
+  <link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
+  <!-- jsp tag-lib declarations -->
+  <%@ taglib uri='http://java.sun.com/jstl/core' prefix='c' %>
 </head>
 
 <body bgcolor="#5C91C1">
@@ -33,9 +38,9 @@
 				<div id="tabs">
 					<ul>	
 						<li><a href="/jackrabbit-jcr-demo/blog/view">My Blog</a></li>
-						<li><a class="current" href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
+						<li><a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
 						<li><a href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp" >Search</a></li>
-						<li><a href="/jackrabbit-jcr-demo/wiki/view" >Wiki</a></li>
+						<li><a class="current" href="/jackrabbit-jcr-demo/wiki/view" >Wiki</a></li>
 						<li><a href="/jackrabbit-jcr-demo/user/logout" >Logout</a></li>
 					</ul>
 				</div>
@@ -51,42 +56,28 @@
             	<table>
             		<tr>
             			<td width="685" height="800" valign="top">
-					          <form action="/jackrabbit-jcr-demo/blog/add" method="post" enctype="multipart/form-data">
+					          <form action="/jackrabbit-jcr-demo/wiki/save"  method="post" onsubmit="return isEmpty();"  >
 					        	<table width="100%" border="0">
-					         	 <tr bgcolor="#CCCCCC">
-					            	<td><div align="center">Add a blog entry </div></td>
-					          	</tr>  
-							  	<tr bgcolor="#CCCCCC">
-					              <td>
-					            	<table width="100%" border="0">
-					              		<tr>
-					                		<td width="17%">Title</td>
-					                		<td width="83%"><input name="title" type="text" id="title" size="66" /></td>
-					             		 </tr>
-					              		 <tr>
-					                		<td valign="top">Text</td>
-					                		<td><textarea name="content" cols="50" rows="10" id="content"></textarea></td>
-					              		 </tr>
-					              		 <tr>
-					                		<td>Image File  </td>
-					                		<td><input name="image" type="file" id="image" size="66" /></td>
-					              		 </tr>
-										 <tr>
-					                		<td>Video File  </td>
-					                		<td><input name="video" type="file" id="video" size="66" /></td>
-					              		 </tr>
-					            	</table>
-					              </td>
-					            </tr>
-					            <tr bgcolor="#CCCCCC">
-					              <td>
-					               	<div align="center">
-					              		<input name="action" type="hidden" id="action" value="add" />
-					              		<input type="submit" name="Submit2" value="Save" />
-					              		<input type="reset" name="Reset" value="Clear" />
-					            	</div>
-					              </td>
-					            </tr>  
+									<tr bgcolor="#CCDDFF"><td colspan="2"><div id="msgArea">
+									<c:if test="${msg ne null}">
+									${msg}
+									</c:if>	
+									</div></td></tr>			         	 
+									<tr bgcolor="#CCCCCC">
+								 	<td width="17%">Title :</td>
+					            	<td width="83%"><input type="text" name="title" id="title" value="${wikiPage.title}" size="89"/> </td>
+					                </tr> 
+									<tr bgcolor="#CCCCCC">
+								 	<td width="17%" valign="top">Content :</td>
+					            	<td width="83%" valign="top" height="400"><textarea name="content" cols="67" rows="25" id="content">${wikiPage.content}</textarea></td>
+					                </tr>
+									<tr bgcolor="#CCCCCC">
+								 	<td width="17%">Change Note :</td>
+					            	<td width="83%"><input type="text" name="changeNote" id="changeNote" size="89"/></td>
+					                </tr>
+									<tr>
+									<td colspan="2" align="center"><input type="submit" value="Save" /><a href="/jackrabbit-jcr-demo/wiki/view"><input type="button" value="Cancel"/></a> </td>
+									</tr>
 					          </table>
 					        </form>       
  						</td>

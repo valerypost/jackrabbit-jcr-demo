@@ -51,7 +51,7 @@
             	<table>
             		<tr>
             			<td width="685" height="800" valign="top">
-        <form method="post" action="/jackrabbit-jcr-demo/UserController/">
+        <form method="post" action="/jackrabbit-jcr-demo/user/add">
         <table width="100%" bgcolor="#CCCCCC">
           <tr>
             <td><div align="center">User Registration </div></td>

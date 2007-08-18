@@ -16,22 +16,14 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
-public class Comment {
+public class Constants {
 	
-	private String content;
-	private String commenter;
+	// OCM Mapping
+	public static String[] OCM_MAPPPINGS;
 	
-	public String getCommenter() {
-		return commenter;
-	}
-	public void setCommenter(String commenter) {
-		this.commenter = commenter;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
+	//Email alerts
+	public static String MAIL_SERVER;
+	public static String FROM_EMAIL;
+	
 
 }

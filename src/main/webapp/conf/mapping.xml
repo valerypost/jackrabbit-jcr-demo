@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE jackrabbit-ocm PUBLIC "-//The Apache Software Foundation//DTD Repository//EN" "D:\Development\gsoc\jackrabbit-jcr-demo\jackrabbit-jcr-demo\conf\jackrabbit-ocm.dtd">
+<!DOCTYPE jackrabbit-ocm PUBLIC "-//The Apache Software Foundation//DTD Repository//EN" "E:\gsoc\jackrabbit-jcr-demo\jackrabbit-jcr-demo\conf\jackrabbit-ocm.dtd">
 <jackrabbit-ocm>
 <class-descriptor className="org.apache.jackrabbit.demo.blog.model.User" jcrNodeType="blog:user">
 	<field-descriptor fieldName="path" path="true" />
 	<field-descriptor fieldName="nickname" jcrName="blog:nickname"/>
 	<field-descriptor fieldName="email" jcrName="blog:email"/>
-	<field-descriptor fieldName="password" jcrName="blog:password "/>
+	<field-descriptor fieldName="password" jcrName="blog:password"/>
+</class-descriptor>
+<class-descriptor className="org.apache.jackrabbit.demo.blog.model.WikiPage" jcrNodeType="wiki:wikiPage">
+	<field-descriptor fieldName="path" path="true" />
+	<field-descriptor fieldName="title" jcrName="wiki:title"/>
+	<field-descriptor fieldName="content" jcrName="wiki:content"/>
+	<field-descriptor fieldName="changeNode" jcrName="wiki:changeNote"/>
 </class-descriptor>
 </jackrabbit-ocm>
