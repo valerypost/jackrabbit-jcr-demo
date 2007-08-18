@@ -21,7 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Add a blog Entry</title>
+<title>${wikiPage.title} -- jcr-jackrabbit-demo -- wiki</title>
 <link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -33,9 +33,9 @@
 				<div id="tabs">
 					<ul>	
 						<li><a href="/jackrabbit-jcr-demo/blog/view">My Blog</a></li>
-						<li><a class="current" href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
+						<li><a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
 						<li><a href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp" >Search</a></li>
-						<li><a href="/jackrabbit-jcr-demo/wiki/view" >Wiki</a></li>
+						<li><a class="current" href="/jackrabbit-jcr-demo/wiki/view" >Wiki</a></li>
 						<li><a href="/jackrabbit-jcr-demo/user/logout" >Logout</a></li>
 					</ul>
 				</div>
@@ -51,42 +51,34 @@
             	<table>
             		<tr>
             			<td width="685" height="800" valign="top">
-					          <form action="/jackrabbit-jcr-demo/blog/add" method="post" enctype="multipart/form-data">
+					          <form action="/jackrabbit-jcr-demo/wiki/view"  method="post" >
 					        	<table width="100%" border="0">
 					         	 <tr bgcolor="#CCCCCC">
-					            	<td><div align="center">Add a blog entry </div></td>
+								 	<td width="17%">Title:</td>
+					            	<td><div align="center">${wikiPage.title}</div></td>
+									<td><a href="/jackrabbit-jcr-demo/wiki/edit"> Edit </a></td>
 					          	</tr>  
 							  	<tr bgcolor="#CCCCCC">
-					              <td>
-					            	<table width="100%" border="0">
-					              		<tr>
-					                		<td width="17%">Title</td>
-					                		<td width="83%"><input name="title" type="text" id="title" size="66" /></td>
-					             		 </tr>
-					              		 <tr>
-					                		<td valign="top">Text</td>
-					                		<td><textarea name="content" cols="50" rows="10" id="content"></textarea></td>
-					              		 </tr>
-					              		 <tr>
-					                		<td>Image File  </td>
-					                		<td><input name="image" type="file" id="image" size="66" /></td>
-					              		 </tr>
-										 <tr>
-					                		<td>Video File  </td>
-					                		<td><input name="video" type="file" id="video" size="66" /></td>
-					              		 </tr>
-					            	</table>
+					              <td colspan="3" height="400" valign="top">
+ 										${wikiPage.content } 
 					              </td>
 					            </tr>
-					            <tr bgcolor="#CCCCCC">
-					              <td>
-					               	<div align="center">
-					              		<input name="action" type="hidden" id="action" value="add" />
-					              		<input type="submit" name="Submit2" value="Save" />
-					              		<input type="reset" name="Reset" value="Clear" />
-					            	</div>
-					              </td>
-					            </tr>  
+							    <tr bgcolor="#CCCCCC">
+								<td colspan="3">
+									 <table width="100%" border="0">
+										 <tr>
+					                		<td width="17%">Version</td>
+					                		<td width="83%">${wikiPage.version}</td>
+					             		 </tr>
+										 <tr>
+										 <td> See the version </td>
+										 <td> <input type="text" name="version" id="version" /> <input type="submit" value="go"/><br/>
+										 <a href="/jackrabbit-jcr-demo/wiki/history">View version history</a>
+										 </td>
+								 </tr>
+					            	</table>
+									</td>
+								 </tr>
 					          </table>
 					        </form>       
  						</td>

@@ -34,7 +34,7 @@
 						<li><a href="/jackrabbit-jcr-demo/blog/view">My Blog</a></li>
 						<li><a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
 						<li><a class="current" href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp" >Search</a></li>
-						<li><a href="#" >Wiki</a></li>
+						<li><a href="/jackrabbit-jcr-demo/wiki/view" >Wiki</a></li>
 						<li><a href="/jackrabbit-jcr-demo/user/logout" >Logout</a></li>
 					</ul>
 				</div>

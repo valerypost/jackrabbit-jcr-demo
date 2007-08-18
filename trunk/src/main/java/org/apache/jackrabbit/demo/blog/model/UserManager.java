@@ -16,29 +16,24 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.NamespaceException;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.jcr.UnsupportedRepositoryOperationException;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryManager;
-import javax.jcr.query.QueryResult;
 
-import org.apache.jackrabbit.api.JackrabbitNodeTypeManager;
-import org.apache.jackrabbit.core.NamespaceRegistryImpl;
-import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
+
 import org.apache.jackrabbit.demo.blog.exception.*;
+import org.apache.jackrabbit.ocm.exception.ObjectContentManagerException;
 import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
+import org.apache.jackrabbit.ocm.query.Filter;
+import org.apache.jackrabbit.ocm.query.Query;
+import org.apache.jackrabbit.ocm.query.QueryManager;
+
 
 /**
  * <code>UserManager</code> handles the management of user nodes.
@@ -87,86 +82,33 @@ public class UserManager {
 	
 	
 	
-	public void addUserOCM (User user) {
-		
-
-        try {
+	public void addUserOCM (User user) throws NonUniqueUsernameException {
 			
-	        NamespaceRegistryImpl nsReg = (NamespaceRegistryImpl)session.getWorkspace().getNamespaceRegistry();
-	        nsReg.safeRegisterNamespace("ocm","http://jackrabbit.apache.org/ocm");
-	
-    		String[] mappingFiles = {"D:\\Development\\gsoc\\jackrabbit-jcr-demo\\jackrabbit-jcr-demo\\conf\\mapping.xml"};
-    		ObjectContentManager objectContentManager = new ObjectContentManagerImpl(session, mappingFiles);
-    		
-	        NodeTypeManagerImpl ntTypeMgr = (NodeTypeManagerImpl) session.getWorkspace().getNodeTypeManager();
-	        
-	        File nodeType = new File("D:\\Development\\gsoc\\jackrabbit-jcr-demo\\jackrabbit-jcr-demo\\conf\\custom_nodetypes.xml");
-	        FileInputStream nodeTypeStream;
-			try {
-				nodeTypeStream = new FileInputStream(nodeType);
-				ntTypeMgr.registerNodeTypes(nodeTypeStream,JackrabbitNodeTypeManager.TEXT_XML,true);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-	        // Registors the custom node types and namespaces
-	        
-    			
-    		user.setPath("/blogRoot/"+user.getUsername());
-    		
-    		objectContentManager.insert(user);
-    		objectContentManager.save();
-       
-        } catch (NamespaceException e) {
-			e.printStackTrace();
-		} catch (UnsupportedRepositoryOperationException e) {
-
-		} catch (AccessDeniedException e) {
-
-		} catch (RepositoryException e) {
-
+		try{
+    			ObjectContentManager objectContentManager = new ObjectContentManagerImpl(session, Constants.OCM_MAPPPINGS);
+    			user.setPath("/blogRoot/"+user.getUsername());
+    			objectContentManager.insert(user);
+    			objectContentManager.save();
+		} catch (ObjectContentManagerException e){
+				throw new NonUniqueUsernameException("Username Already exists");
 		}
-
+    		
 	}
 	
 	/**
 	 * This methods returns all users of the system
 	 * @return all the users  as an ArrayList of <code>org.apache.jackrabbit.demo.blog.model.User</code>
 	 */
-	public ArrayList<User> getAllUsers() {
-		
-		ArrayList<User> userList = new ArrayList<User>();
-		
-		try {
+	public  Collection<User> getAllUsers() {
 			
-			QueryManager queryMgr  = session.getWorkspace().getQueryManager();
-			String xPath ="/jcr:root/blogRoot/element(*,blog:user)";
-	        Query query = queryMgr.createQuery(xPath,Query.XPATH);
-	        QueryResult queryResult = query.execute();
-	        
-	        
-	        for (NodeIterator iter = queryResult.getNodes(); iter.hasNext(); ) {
+			ObjectContentManager objectContentManager = new ObjectContentManagerImpl(session, Constants.OCM_MAPPPINGS);
+			QueryManager queryMgr  = objectContentManager.getQueryManager();
+			Filter filter = queryMgr.createFilter(User.class);
+			filter.setScope("/blogRoot/");
+			Query query = queryMgr.createQuery(filter);
 			
-			Node node = iter.nextNode();			
-				
-				User user = new User();
-				user.setUsername(node.getName());
-				user.setNickname(node.getProperty("blog:nickname").getString());
-				user.setEmail(node.getProperty("blog:email").getString());
-				userList.add(user);
-				
-			
-		    }
-	              			
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-		
-		return userList;
-		
+			return (Collection<User>) objectContentManager.getObjects(query);
+
 	}
 	
 	/**
@@ -179,31 +121,48 @@ public class UserManager {
 	 */
 	public static boolean login(String username, String password, Session session) throws RepositoryException{
 		
-			QueryManager queryMgr  = session.getWorkspace().getQueryManager();
-			String xPath ="/jcr:root/blogRoot/"+username;
-	        Query query = queryMgr.createQuery(xPath,Query.XPATH);
-	        QueryResult queryResult = query.execute();
-	        NodeIterator iter = queryResult.getNodes();
-	        
-			// If we get a node as a result that means user exists and we can check for password
-	        if(iter.hasNext()) {
+		Node userNode = getUserNode(username,session);
+	        	        	
+    	// check whether the given password correct
+    	if (userNode != null && password.equals(userNode.getProperty("blog:password").getString())) {
+    		return true;
+    	} else {
+    		return false;
+    	}
 	        	
-	        	Node userNode = iter.nextNode();
-	        	
-	        	// check whether the given password correct
-	        	if (password.equals(userNode.getProperty("blog:password").getString())) {
-	        		return true;
-	        	} else {
-	        		return false;
-	        	}
-	        	
-	       // Username doesn't exist
-	        } else {
-	        	return false;
-	        }
-					
-
+	
+	}
+	
+	
+	public static String getUUID(String username, Session session) throws RepositoryException{
+		
+		Node userNode = getUserNode(username,session);
+		
+		if (userNode != null) {
+			return userNode.getUUID();
+		} else {
+			return null;
+		}
+		
 		
 	}
+	
+	
+	private static Node getUserNode(String username, Session session) throws RepositoryException {
+			javax.jcr.query.QueryManager queryMgr  = session.getWorkspace().getQueryManager();
+			String xPath ="/jcr:root/blogRoot/"+username;
+			javax.jcr.query.Query query = queryMgr.createQuery(xPath,javax.jcr.query.Query.XPATH);
+	        javax.jcr.query.QueryResult queryResult = query.execute();
+	        NodeIterator iter = queryResult.getNodes();
+	        
+			// Username is unique and if we get a node as a result that means user exists 
+	        if(iter.hasNext()) {      	
+	        	return iter.nextNode(); 	
+	 	    // Username doesn't exist
+	        } else {
+	        	return null;
+	        }
+	}
+	
 	
 }

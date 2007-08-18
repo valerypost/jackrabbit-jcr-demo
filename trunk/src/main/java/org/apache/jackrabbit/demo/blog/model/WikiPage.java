@@ -16,16 +16,27 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
-public class Comment {
+public class WikiPage {
 	
+	private String path;
+	private String title;
 	private String content;
-	private String commenter;
-	
-	public String getCommenter() {
-		return commenter;
+	private String changeNote;
+	private String version;
+
+	public String getVersion() {
+		return version;
 	}
-	public void setCommenter(String commenter) {
-		this.commenter = commenter;
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	public WikiPage() {
+	}
+	public String getChangeNote() {
+		return changeNote;
+	}
+	public void setChangeNote(String changeNote) {
+		this.changeNote = changeNote;
 	}
 	public String getContent() {
 		return content;
@@ -33,5 +44,18 @@ public class Comment {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	
 }

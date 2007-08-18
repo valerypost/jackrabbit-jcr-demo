@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.jackrabbit.demo.blog.exception.InvalidUserException;
-import org.apache.jackrabbit.value.ValueFactoryImpl;
 
 /**
  * This class <code>BlogManager</code> handles manupulating blog entries. <code>BlogManager</code> users following node structure
@@ -167,6 +166,26 @@ public class BlogManager {
 			return null;
 		}
 
+	}
+	
+	public static BlogEntry getByUUID(String UUID, Session session) {
+		
+		try {
+			
+			Node blogEntryNode = session.getNodeByUUID(UUID);
+			BlogEntry blogEntry = mapBlogEntry(blogEntryNode);
+			
+			return blogEntry;
+			
+		} catch (ItemNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	public static ArrayList<BlogEntry> getByDate(String username, Calendar from, Calendar to, Session session ) {

@@ -24,7 +24,6 @@
 <title>Welcome to Jackrabbit-JCR-demo</title>
 <link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
 
-<link rel="alternate" type="application/atom+xml"title="Recent blog entries in Atom" href="/jackrabbit-jcr-demo/blog/rss" />
 </head>
 
 <body bgcolor="#5C91C1">
