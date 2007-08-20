@@ -19,7 +19,6 @@ package org.apache.jackrabbit.demo.blog.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.RequestDispatcher;
@@ -43,18 +42,7 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
 	 * Serial version UID.
 	 */
 	private static final long serialVersionUID = 4885316149052515878L;
-
-
-	/** 
-	 * Method which handles the GET method requests
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// Delegate the work to doPost(HttpServletRequest request, HttpServletResponse response) method
-		doPost(request,response);
-	} 	
-	
-
+ 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
@@ -65,12 +53,24 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
 			// Get the username of the current session. "username" attribute is set in LoginController when the user log in to the system.
 			String username = (String)request.getSession().getAttribute("username");
 			
+			if (username == null || username.equals("guest")) {
+				//set the attributes which are required by user messae page
+				request.setAttribute("msgTitle", "Authentication Required");
+				request.setAttribute("msgBody", "You have to log in to see your blog page");
+				request.setAttribute("urlText", "go back to login page");
+				request.setAttribute("url","/jackrabbit-jcr-demo/blog/index.jsp");	
+				
+				//forward the request to user massage page
+	            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
+	            requestDispatcher.forward(request, response);
+	            return;
+			}
+			
+			
 			// Get a ArrayList of blog entries of user
 			ArrayList<BlogEntry> blogList = BlogManager.getByUsername(username,session);
 			
 			String uuid = UserManager.getUUID(username, session);
-			
-			//TODO Do something like paging when the number of blog entries returned is large
 			
 			// Set the blogList as a request attribute 
 			request.setAttribute("blogList",blogList);
@@ -82,20 +82,14 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
             requestDispatcher.forward(request, response);
 			
 			
-		} catch (LoginException e) {
-			// Log the exception and throw a ServletException
-			log("Couldn't log in to the repository",e);
-			throw new ServletException("Couldn't log in to the repository");
 		} catch (RepositoryException e) {
-			// Log the exception and throw a ServletException
-			log("Error occured while accessing the repository",e);
-			throw new ServletException("Error occured while accessing the repository");
+			throw new ServletException("Couldn't retrieve the blog page. Error occured while accessing the repository",e);
 		} catch (InvalidUserException e) {
-			log("Username invalid",e);
-			throw new ServletException("Username invalid");
+			throw new ServletException("Couldn't retrieve the blog page. Username was not found in the system",e);
 		} finally {
-			//TODO this will be called after a login exception or with null session. Handle the session logout in a better way
-			session.logout();
+			if (session != null) {
+				session.logout();
+			}
 		}
 	}   	  	    
 }

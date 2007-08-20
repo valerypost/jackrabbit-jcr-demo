@@ -40,7 +40,6 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
    	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       
-		Session session;
 		try {
 			
 			// login to the repository
@@ -56,7 +55,11 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
             requestDispatcher.forward(request, response);
 			
 		} catch (RepositoryException e) {
-			throw new ServletException("Error occured in accessing repository",e);
+			throw new ServletException("Could retrive the blog page. Error occured in accessing repository",e);
+		} finally {
+			if (session != null) {
+				session.logout();
+			}
 		}
 	}   	  	    
 }

@@ -16,70 +16,67 @@
  */
 package org.apache.jackrabbit.demo.blog.servlet;
 
-import java.io.IOException;
-
-import javax.jcr.LoginException;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jackrabbit.demo.blog.exception.JackrabbitJCRDemoException;
 import org.apache.jackrabbit.demo.blog.model.AtomGenerator;
-import org.apache.jackrabbit.servlet.ServletRepository;
 import org.w3c.dom.Document;
 
 /**
- * Servlet implementation class for Servlet: AtomGeneratorServlet
- *
+ * Controller servlet which handles Atom syndication feed generation
  */
- public class AtomGeneratorServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
+ public class AtomGeneratorServlet extends ControllerServlet {
 
-	  /**
-	 * 
+	 /**
+	 * Serial version id
 	 */
 	private static final long serialVersionUID = 3568776968199394035L;
 	
-	/**
-	  * Repository instance aquired through <code>org.apache.jackrabbit.servlet.ServletRepository</code>
-	  */
-	  protected final Repository repository = new ServletRepository(this); 
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException {
+			
+		// Requests for the Atom feed generation would be of format
+		// /jackrabbit-jcr-demo/atom/<category>/<subcategory>
+		// eg. /jackrabbit-jcr-demo/atom/user/<user-node-uuid>
 		
+		
+		// Resolving the category and the subcategory from the request URI
+		// Slashes "/" are used to split category and subcategory 
 		String URI = request.getRequestURI();
 		int index1 = URI.lastIndexOf("/");
 		int index2 = URI.lastIndexOf("/",index1-1);
 		
-		String id = URI.substring(index1+1, URI.length());
+		String subcategory = URI.substring(index1+1, URI.length());
 		String category = URI.substring(index2+1,index1);
 		
 		try {
-			 
+				 
 			//Login to the repository and aquire a session
-			Session session = repository.login(new SimpleCredentials("username","password".toCharArray()));
+			session = repository.login(new SimpleCredentials("username","password".toCharArray()));
 			
+			// Initiate an Atom Generator passing the session as it needs to access the repository to collect required data 
 			AtomGenerator atomGenerator = new AtomGenerator(session);
 			
-			Document doc = atomGenerator.generate(category,id);
+			// Pass the category and subcategory and generate the feed
+			Document doc = atomGenerator.generate(category,subcategory);
 			
+			// set the content type of the response 
 			response.setContentType("application/atom+xml");
+			
+			// Prints the generated XML Atom feed to HTTP response 
 			atomGenerator.print(doc, response.getOutputStream());
 			
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+		} catch (Exception e) {
+			throw new JackrabbitJCRDemoException("JJD001",e);
+		} finally {
+			// finally logout the session only if we have successfully loged in
+			if ( session != null) {
+				session.logout();
+			}
 		}
-		
-		
-	}  	
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request,response);
-	}   	  	    
+	}  		  	    
 }

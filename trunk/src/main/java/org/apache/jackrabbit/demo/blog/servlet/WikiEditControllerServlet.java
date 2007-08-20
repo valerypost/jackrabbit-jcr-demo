@@ -18,7 +18,6 @@ package org.apache.jackrabbit.demo.blog.servlet;
 
 import java.io.IOException;
 
-import javax.jcr.LoginException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.SimpleCredentials;
@@ -27,14 +26,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jackrabbit.demo.blog.model.Constants;
-import org.apache.jackrabbit.demo.blog.model.User;
 import org.apache.jackrabbit.demo.blog.model.WikiPage;
-import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
-import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
-import org.apache.jackrabbit.ocm.query.Filter;
-import org.apache.jackrabbit.ocm.query.Query;
-import org.apache.jackrabbit.ocm.query.QueryManager;
+
 
 /**
  * Servlet implementation class for Servlet: WikiEditControllerServlet
@@ -43,10 +36,15 @@ import org.apache.jackrabbit.ocm.query.QueryManager;
  public class WikiEditControllerServlet extends ControllerServlet {
 
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = 4621694324606346198L;
 
-		//log in to the repository and aquire a session
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		try {
+			// log in to the repository and aquire a session
 			session = repository.login(new SimpleCredentials("username","password".toCharArray()));
 
             Node frontPage = session.getRootNode().getNode("wiki/frontPage");
@@ -67,7 +65,11 @@ import org.apache.jackrabbit.ocm.query.QueryManager;
             requestDispatcher.forward(request, response);
 			
 		} catch (RepositoryException e) {
-			e.printStackTrace();
+			throw new ServletException("Could start editing wiki page. Error occured while accessing the repository.",e);
+		} finally {
+			if (session != null) {
+				session.logout();
+			}
 		}
 	}   	  	    
 }

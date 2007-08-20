@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.RequestDispatcher;
@@ -63,6 +62,12 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
 			
 			// Get the username of the current session. "username" attribute is set in LoginController when the user log in to the system.
 			String username = (String)request.getSession().getAttribute("username");
+			
+			//If the user is not not logged in, set the username to guest
+			if (username == null) {
+				username = "guest";
+				request.getSession().setAttribute("username", "guest");
+			}
 			
 			// Get a ArrayList of blog entries of user
 			ArrayList<BlogEntry> blogList = null;
@@ -140,10 +145,7 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
             RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/listBlogEntries.jsp");
             requestDispatcher.forward(request, response);
 					
-			
-		} catch (LoginException e) {
-			// Log the exception and throw a ServletException
-			log("Couldn't log in to the repository",e);
+
 		} catch (RepositoryException e) {
 			// Log the exception and throw a ServletException
 			log("Error occured while accessing the repository",e);
@@ -160,7 +162,9 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
             requestDispatcher.forward(request, response);
 
 		} finally {
-			session.logout();
+			if (session != null) {
+				session.logout();
+			}
 		}
 	}   	  	    
 }

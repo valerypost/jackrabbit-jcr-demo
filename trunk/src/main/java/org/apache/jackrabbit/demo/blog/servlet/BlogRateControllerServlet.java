@@ -71,7 +71,9 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 					log("Error occured while accessing the repository",e);
 					throw new ServletException("Error occured while accessing the repository",e);
 			   } finally {
-				   session.logout();
+				   if (session != null) {
+				     session.logout();
+				   }
 			   }
 		} 
 }

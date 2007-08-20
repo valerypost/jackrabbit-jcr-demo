@@ -18,7 +18,6 @@ package org.apache.jackrabbit.demo.blog.servlet;
 
 import java.io.IOException;
 
-import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.RequestDispatcher;
@@ -34,6 +33,11 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
  */
  public class BlogCommentControllerServlet extends ControllerServlet {
   	
+	/**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = -6415428833647132228L;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		   String UUID = request.getParameter("UUID");
 		   String comment = request.getParameter("comment");
@@ -45,6 +49,12 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 				
 				// Get the username of the current session. "username" attribute is set in LoginController when the user log in to the system.
 				String username = (String)request.getSession().getAttribute("username");
+				
+				//If the user is not not logged in, set the username to guest
+				if (username == null) {
+					username = "guest";
+					request.getSession().setAttribute("username", "guest");
+				}
 				
 				BlogManager.addComment(UUID,comment,username,session);
 				
@@ -58,17 +68,12 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 	            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
 	            requestDispatcher.forward(request, response);
 			
-		
-		   } catch (LoginException e) {
-				// Log the exception and throw a ServletException
-				log("Couldn't log in to the repository",e);
-				throw new ServletException("Couldn't log in to the repository",e);
 		   } catch (RepositoryException e) {
-				// Log the exception and throw a ServletException
-				log("Error occured while accessing the repository",e);
-				throw new ServletException("Error occured while accessing the repository",e);
+				throw new ServletException("Couldn't comment the blog entry. Error occured while accessing the repository",e);
 		   } finally {
-			   session.logout();
+			   if (session != null) {
+				   session.logout();
+			   }
 		   }
 	}   	  	    
 }

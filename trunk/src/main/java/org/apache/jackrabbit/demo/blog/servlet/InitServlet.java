@@ -16,7 +16,8 @@
  */
 package org.apache.jackrabbit.demo.blog.servlet;
 
-import org.apache.jackrabbit.demo.blog.model.Constants;
+import org.apache.jackrabbit.demo.blog.exception.ErrorConfig;
+import org.apache.jackrabbit.demo.blog.model.Config;
 
 import org.apache.jackrabbit.api.JackrabbitNodeTypeManager;
 import org.apache.jackrabbit.core.NamespaceRegistryImpl;
@@ -36,7 +37,6 @@ import java.io.InputStream;
 /**
  * Servlet that initializes the jackrabbit-jcr-demo application.
  * Custom Node types are registed and the node stucture is created if not already done.
- * @since 1.0
  */
 
 public class InitServlet extends HttpServlet {
@@ -62,11 +62,13 @@ public class InitServlet extends HttpServlet {
     public void init() throws ServletException {
    	
         try {
-        	//login to repository and aquire a JCR session
+        	//login to repository and aquire a JCR session and we won't logout this session because we want the listeners to be 
+        	//active through out the application
         	session = repository.login(new SimpleCredentials("user", "password".toCharArray()));
         	
+        	config();
         	
-        	initConstants();
+        	ErrorConfig.init();
         	
         	// Register the custom node types from the CND file if not already registered 
             registerCustomNodeTypes();
@@ -74,16 +76,16 @@ public class InitServlet extends HttpServlet {
             // Creates the basic node structure if not created
             createNodeStructure();
             
+            doInitialCheckin();
+            
             // Register the event listener to listen to new comments event
             registerListeners();
 
             log("JACKRABBIT-JCR-DEMO: initialized ...");
             
-        } catch (RepositoryException e) {
-            throw new ServletException(e);
-        } finally {
-           // session.logout();
-        }
+        } catch (Exception e) {
+			throw new ServletException("Jackrabbit-jcr-demo initialization failed",e);
+		}
     }
     
 
@@ -138,10 +140,26 @@ public class InitServlet extends HttpServlet {
     	try {
     		
     		Node rootNode = session.getRootNode();
+    		Node admin = null;
     		
     		// creates the root node of the system if not already created
     		if ( !rootNode.hasNode("blogRoot")) {
-    			rootNode.addNode("blogRoot","nt:folder");
+    			Node blogRoot = rootNode.addNode("blogRoot","nt:folder");
+    			
+    			// Adding the admin user
+    			admin = blogRoot.addNode("admin","blog:user");
+    			admin.setProperty("blog:nickname","admin");
+    			admin.setProperty("blog:email","nandana.cse@gmail.com");
+    			admin.setProperty("blog:password","admin");
+    			session.save();
+    			
+    			// Adding the guest user
+    			Node guest = blogRoot.addNode("guest","blog:user");
+    			guest.setProperty("blog:nickname","guest");
+    			
+    			// These properties will never be used by the system
+    			guest.setProperty("blog:email","guest@guest.lk");
+    			guest.setProperty("blog:password","guest");
     		}
     		
     		// Created the library node if not already created
@@ -152,11 +170,11 @@ public class InitServlet extends HttpServlet {
     		if (!rootNode.hasNode("wiki")) {
     			Node wiki = rootNode.addNode("wiki","nt:folder");
     			Node frontPage = wiki.addNode("frontPage", "wiki:wikiPage");
-    			
+    				
     			frontPage.setProperty("wiki:title", "Front Page");
-    			frontPage.setProperty("wiki:content","");	
-    			
-    			frontPage.save();
+    			frontPage.setProperty("wiki:content","Type the content here");
+    			frontPage.setProperty("wiki:savedBy",admin.getUUID());
+ 
     		}
     		
     		session.save();
@@ -185,11 +203,25 @@ public class InitServlet extends HttpServlet {
 	    
     }
     
-    private void initConstants() {
-    	Constants.OCM_MAPPPINGS = new String[]{getServletConfig().getServletContext().getRealPath("")+getInitParameter("constants.ocm.mapping_xml")};
+    private void doInitialCheckin() throws RepositoryException {
+    	
+    	Node rootNode = session.getRootNode();
+    	
+    	Node frontPage = rootNode.getNode("wiki/frontPage");
+    	
+        if(frontPage.isCheckedOut()) {
+               frontPage.checkin();
+        }
+    	
+    }
     
-    	Constants.MAIL_SERVER = getInitParameter("constants.mail.mail_server");
-    	Constants.FROM_EMAIL = getInitParameter("constants.mail.from_email");
+    private void config() {
+    	Config.OCM_MAPPPINGS = new String[]{getServletConfig().getServletContext().getRealPath("")+getInitParameter("config.ocm.mapping_xml.path")};
+    
+    	Config.MAIL_SERVER = getInitParameter("config.mail.mail_server");
+    	Config.FROM_EMAIL = getInitParameter("config.mail.from_email");
+    	
+    	ErrorConfig.ERROR_CODE_XML = getServletConfig().getServletContext().getRealPath("")+getInitParameter("error_config.error_codes_xml.path");
     
     }
     

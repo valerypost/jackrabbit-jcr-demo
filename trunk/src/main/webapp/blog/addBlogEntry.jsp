@@ -16,15 +16,26 @@
  * limitations under the License.
  */
 %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Add a blog Entry</title>
-<link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
-</head>
 
+<!-- jackrabbit-jcr-demo main css -->
+<link href="/jackrabbit-jcr-demo/css/jackrabbit-jcr-demo.css" rel="stylesheet" type="text/css" />
+
+<!-- jsp tag-lib declarations -->
+<%@ taglib uri='http://java.sun.com/jstl/core' prefix='c' %>
+</head>
+<c:if test="${username eq null}">
+	<c:set var="msgTitle" value="Authentication Required" scope="request"/>
+	<c:set var="msgBody" value="Only logged in users are allowed add blog entries." scope="request"/>
+	<c:set var="urlText" value="go back to login page" scope="request"/>
+	<c:set var="url" value="/jackrabbit-jcr-demo/blog/index.jsp" scope="request"/>
+	
+	<jsp:forward page="/blog/userMessage.jsp"></jsp:forward>
+</c:if>
 <body bgcolor="#5C91C1">
 	<table width="100%" height="100%" border="0">
 		<tr valign="top">
@@ -91,7 +102,7 @@
 					        </form>       
  						</td>
 		 				<td width="5"></td> 
-						<td width="275" bgcolor="#CCCCCC"></td>
+						<td width="275" bgcolor="#CCDDFF" valign="top"><jsp:include page="/blog/banners/inside-right.html"/></td>
 						<td width="5"></td>
 					</tr>
 			  </table>

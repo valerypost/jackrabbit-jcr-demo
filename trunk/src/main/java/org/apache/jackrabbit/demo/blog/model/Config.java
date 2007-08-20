@@ -16,7 +16,11 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
-public class Constants {
+/**
+ * Class used to keep configuration details
+ * These configuration details are set at the start by <code> org.apache.jackrabbit.demo.blog.servlet.InitServlet</code>
+ */
+public class Config {
 	
 	// OCM Mapping
 	public static String[] OCM_MAPPPINGS;

@@ -19,7 +19,6 @@ package org.apache.jackrabbit.demo.blog.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.RequestDispatcher;
@@ -36,6 +35,11 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
  */
  public class BlogEntryViewController extends ControllerServlet {
 
+	/**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = 6477524199449193563L;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String uuid = request.getParameter("uuid");
@@ -43,6 +47,14 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 		try {
 			//log in to the repository and aquire a session
 			session = repository.login(new SimpleCredentials("username","password".toCharArray()));
+			
+			// Get the username of a user already logged in
+			String username = (String)request.getSession().getAttribute("username");
+			
+			// If the user is not already logged in, set the username to guest
+			if (username == null) {
+				request.getSession().setAttribute("username","guest");
+			}
 			
 			BlogEntry blogEntry = BlogManager.getByUUID(uuid,session);
 			ArrayList<BlogEntry> blogList = new ArrayList<BlogEntry>();
@@ -54,12 +66,13 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 			// Forward the request to blog entries page
             RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/listBlogEntries.jsp");
             requestDispatcher.forward(request, response);
-			
-			
-		} catch (LoginException e) {
-			e.printStackTrace();
+		
 		} catch (RepositoryException e) {
-			e.printStackTrace();
+			throw new ServletException("Could not retrive the blog entry, Error occured in the repository ",e);
+		} finally {
+			if (session != null) {
+				session.logout();
+			}
 		}
 	}   	  	    
 }

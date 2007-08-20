@@ -97,6 +97,7 @@
 	                     ${blogEntry.content}
 			  </td>
              </tr>
+             <c:if test="${blogEntry.hasVideo eq true}">
              <tr>
              	<td>
              		<object codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="320" height="240" id="FLVPlayer">
@@ -109,6 +110,7 @@
                     </object>
              	</td>
              </tr>
+             </c:if>
              <tr>
               <td height="10" colspan="2"></td>
              </tr>
@@ -170,7 +172,7 @@
         </c:forEach>	 
 	   </td>
        <td width="5"></td>
-	   <td width="275" bgcolor="#CCCCCC"></td>
+	   <td width="275" bgcolor="#CCDDFF" valign="top"><jsp:include page="/blog/banners/blog-right.html"/></td>
 	   <td width="5"></td>
       </tr>
      </table>

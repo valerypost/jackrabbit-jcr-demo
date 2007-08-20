@@ -19,7 +19,6 @@ package org.apache.jackrabbit.demo.blog.model;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -132,15 +131,8 @@ public class BlogManager {
 	 * @return returns an ArrayList of blog entries of the given user
 	 * @throws InvalidUserException if the user is not a valid user of the system
 	 */
-	public static ArrayList<BlogEntry> getByUsername(String username, Session session)  throws InvalidUserException{
-				
-		try {
-			
-			// Check whether the given user is a valid user of the system
-			if (!session.itemExists("/blogRoot/"+username)) {
-				throw new InvalidUserException(username + " does not exist in blog space ");
-			}
-			
+	public static ArrayList<BlogEntry> getByUsername(String username, Session session)  throws RepositoryException,InvalidUserException{
+					
 			// Aquire an QueryManager from the current JCR session
 			QueryManager queryMgr = session.getWorkspace().getQueryManager();
 			
@@ -159,38 +151,20 @@ public class BlogManager {
 	        }
 	        
 	        return blogEntryList;
-	        
-	        
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			return null;
-		}
-
 	}
 	
-	public static BlogEntry getByUUID(String UUID, Session session) {
-		
-		try {
+	public static BlogEntry getByUUID(String UUID, Session session) throws RepositoryException {
 			
 			Node blogEntryNode = session.getNodeByUUID(UUID);
 			BlogEntry blogEntry = mapBlogEntry(blogEntryNode);
 			
 			return blogEntry;
 			
-		} catch (ItemNotFoundException e) {
-
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-
-			e.printStackTrace();
-		}
-		
-		return null;
 	}
 	
-	public static ArrayList<BlogEntry> getByDate(String username, Calendar from, Calendar to, Session session ) {
+	public static ArrayList<BlogEntry> getByDate(String username, Calendar from, Calendar to, Session session ) throws RepositoryException{
 		
-		try {
+
 			
 			// Aquire an QueryManager from the current JCR session
 			QueryManager queryMgr = session.getWorkspace().getQueryManager();
@@ -218,15 +192,9 @@ public class BlogManager {
 	        return blogEntryList;
         
         
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 	
-	public static ArrayList<BlogEntry> getByContent(String content,Session session){
-		
-		try {
+	public static ArrayList<BlogEntry> getByContent(String content,Session session) throws RepositoryException {
 		
 			// Aquire an QueryManager from the current JCR session
 			QueryManager queryMgr = session.getWorkspace().getQueryManager();
@@ -247,30 +215,18 @@ public class BlogManager {
 	        
 	        return blogEntryList;
         
-        
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 	
-	public static  void removeBlogEntry(String UUID,String username,Session session){
-		try {
+	public static  void removeBlogEntry(String UUID,String username,Session session) throws RepositoryException{
+		
 			Node blogEntryNode = session.getNodeByUUID(UUID);
 			blogEntryNode.remove();
 			session.save();
 			
-		} catch (ItemNotFoundException e) {
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-		
 	}
 	
-	public static void addComment(String UUID, String comment,String username, Session session){
+	public static void addComment(String UUID, String comment,String username, Session session) throws RepositoryException{
 		
-		try {
 			Node blogEntryNode = session.getNodeByUUID(UUID);
 			Node userNode = (Node)session.getItem("/blogRoot/"+username);	
 			
@@ -285,30 +241,15 @@ public class BlogManager {
 			
 			session.save();
 			
-		} catch (ItemNotFoundException e) {
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-		
 	}
 	
-	public static void rateBlogEntry(String UUID, int rank,String username, Session session){
+	public static void rateBlogEntry(String UUID, int rank,String username, Session session) throws RepositoryException{
 		
-		try {
 			Node blogEntryNode = session.getNodeByUUID(UUID);
 			long currentRank = blogEntryNode.getProperty("blog:rate").getLong();
 			long newRank = ( currentRank + rank ) / 2;
 			blogEntryNode.setProperty("blog:rate", newRank);
 			session.save();
-			
-		} catch (ItemNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	
@@ -323,7 +264,7 @@ public class BlogManager {
     	blogEntry.setRate(blogEntryNode.getProperty("blog:rate").getLong());
     	blogEntry.setUUID(blogEntryNode.getUUID()); 
     	blogEntry.setHasImage(blogEntryNode.hasNode("image"));
-    	
+    	blogEntry.setHasVideo(blogEntryNode.hasNode("video"));
     	NodeIterator commentIter = blogEntryNode.getNodes("comment*");
     	
     	while (commentIter.hasNext()) {

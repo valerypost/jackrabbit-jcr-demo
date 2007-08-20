@@ -83,7 +83,7 @@
 					        </form>       
  						</td>
 		 				<td width="5"></td> 
-						<td width="275" bgcolor="#CCCCCC"></td>
+						<td width="275" bgcolor="#CCDDFF" valign="top"><jsp:include page="/blog/banners/front-right.html"/></td>
 						<td width="5"></td>
 					</tr>
 			  </table>

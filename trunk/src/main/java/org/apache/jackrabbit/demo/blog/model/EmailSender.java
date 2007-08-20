@@ -24,16 +24,15 @@ import java.text.SimpleDateFormat;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
-import javax.mail.Store;
 import javax.mail.Transport;
-import javax.mail.URLName;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import com.sun.mail.pop3.POP3SSLStore;
-
+/**
+ * This class is used to send emails when sending email alerts about blog comments 
+ */
 public class EmailSender {
 	
     public static void send(String title, String commentor, String email, Date date) {
@@ -41,13 +40,13 @@ public class EmailSender {
         try {
     	
         	Properties props = System.getProperties();
-            props.put("mail.smtp.host", Constants.MAIL_SERVER);
+            props.put("mail.smtp.host", Config.MAIL_SERVER);
             Session mailsession = Session.getDefaultInstance(props, null);
             javax.mail.Message message = new MimeMessage(mailsession);
 
 			message.setSubject("You blog entry is commented");
 
-            message.setFrom(new InternetAddress(Constants.FROM_EMAIL));
+            message.setFrom(new InternetAddress(Config.FROM_EMAIL));
             message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(email));
 
             DateFormat dateFormat   = new SimpleDateFormat("EEEEEE, yyyy.MM.dd 'at' HH:mm a");
@@ -66,12 +65,5 @@ public class EmailSender {
 				e.printStackTrace();
 			}
     }
-
-   public static void main(String args[]) {
-	   
-	   Constants.MAIL_SERVER = "cse.mrt.ac.lk";
-	   Constants.FROM_EMAIL = "nandana@cse.mrt.ac.lk";
-	   send("title","me","nandana.cse@gmail.com", new Date());
-   }
 
 }

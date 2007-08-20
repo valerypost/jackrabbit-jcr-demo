@@ -42,8 +42,12 @@ public class BlogEntry {
 	private Calendar updatedOn; 
 	//UUID of blog entry
 	private String UUID;
+	
 	//Boolean which tells whether the blog entry has an image 
 	private boolean hasImage;
+	
+	//Boolean which tells whether the blog entry has a video 
+	private boolean hasVideo;
 	
 	private ArrayList<Comment> commentList = new ArrayList<Comment>();
 	
@@ -166,24 +170,53 @@ public class BlogEntry {
 		UUID = uuid;
 	}
 	
+	/**
+	 * @param comment comment to be added to the comment list of this blog entry
+	 */
 	public void addComment(Comment comment) {
 		commentList.add(comment);
 	}
 
+	/**
+	 * @return comment list of this blog entry
+	 */
 	public ArrayList<Comment> getCommentList() {
 		return commentList;
 	}
 
+	/**
+	 * @param commentList comment list of this blog enrty
+	 */
 	public void setCommentList(ArrayList<Comment> commentList) {
 		this.commentList = commentList;
 	}
 
+	/**
+	 * @return true if this blog entry has an image and false if not
+	 */
 	public boolean isHasImage() {
 		return hasImage;
 	}
 
+	/**
+	 * @param hasImage whether the blog entry has an image
+	 */
 	public void setHasImage(boolean hasImage) {
 		this.hasImage = hasImage;
+	}
+
+	/**
+	 * @return true if this blog entry has a video and false if not
+	 */
+	public boolean isHasVideo() {
+		return hasVideo;
+	}
+
+	/**
+	 * @param hasImage whether the blog entry has an video
+	 */
+	public void setHasVideo(boolean hasVideo) {
+		this.hasVideo = hasVideo;
 	}
 	
 

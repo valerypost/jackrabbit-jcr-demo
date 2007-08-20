@@ -24,3 +24,4 @@
 - wiki:title (string) mandatory primary
 - wiki:content (string) mandatory
 - wiki:changeNote (String) = 'empty page' autocreated
+- wiki:savedBy (reference) mandatory  < blog:user

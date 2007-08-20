@@ -102,6 +102,21 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 			
 			String username = (String)request.getSession().getAttribute("username");
 			
+			// Only logged in users are allowed to create blog entries
+			if (username == null) {
+				//set the attributes which are required by user messae page
+				request.setAttribute("msgTitle", "Authentication Required");
+				request.setAttribute("msgBody", "Only logged in users are allowed to add blog entries.");
+				request.setAttribute("urlText", "go back to login page");
+				request.setAttribute("url","/jackrabbit-jcr-demo/blog/index.jsp");	
+				
+				//forward the request to user massage page
+	            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
+	            requestDispatcher.forward(request, response);
+	            return;
+				
+			}
+			
 			Node blogRootNode = session.getRootNode().getNode("blogRoot");
 			Node userNode = blogRootNode.getNode(username);
 			
@@ -149,26 +164,59 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
     		
     		// If the blog entry has an image
     		if (image.getSize() > 0) {
-    			System.out.println("Video : "+image.getContentType() );
-	    		Node imageNode = blogEntryNode.addNode("image","nt:file");
-	    		Node contentNode = imageNode.addNode("jcr:content","nt:resource");
-	    		contentNode.setProperty("jcr:data",image.getInputStream());
-	    		contentNode.setProperty("jcr:mimeType",image.getContentType());
-	    		contentNode.setProperty("jcr:lastModified",date);
+    			
+    			if(image.getContentType().startsWith("image")) {
+    	    		
+    				Node imageNode = blogEntryNode.addNode("image","nt:file");
+    	    		Node contentNode = imageNode.addNode("jcr:content","nt:resource");
+    	    		contentNode.setProperty("jcr:data",image.getInputStream());
+    	    		contentNode.setProperty("jcr:mimeType",image.getContentType());
+    	    		contentNode.setProperty("jcr:lastModified",date);
+    			} else {
+    				
+    				session.refresh(false);
+    				
+    				//set the attributes which are required by user messae page
+    				request.setAttribute("msgTitle", "Unsupported image format");
+    				request.setAttribute("msgBody", "The image you attached in not supported");
+    				request.setAttribute("urlText", "go back to new blog entry page");
+    				request.setAttribute("url","/jackrabbit-jcr-demo/blog/addBlogEntry.jsp");	
+    				
+    				//forward the request to user massage page
+    	            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
+    	            requestDispatcher.forward(request, response);
+    	            return;
+    			}
+
     		}
     		
     		// If the blog entry has a video
     		if (video.getSize() > 0) {
     			
-    			System.out.println("Video : "+video.getName());
-	    		Node imageNode = blogEntryNode.addNode("video","nt:file");
-	    		Node contentNode = imageNode.addNode("jcr:content","nt:resource");
-	    		contentNode.setProperty("jcr:data",video.getInputStream());
-	    		contentNode.setProperty("jcr:mimeType",video.getContentType());
-	    		contentNode.setProperty("jcr:lastModified",date);
+    			if (video.getName().endsWith(".flv" ) ||video.getName().endsWith(".FLV") ) {
+    				
+    				Node imageNode = blogEntryNode.addNode("video","nt:file");
+    	    		Node contentNode = imageNode.addNode("jcr:content","nt:resource");
+    	    		contentNode.setProperty("jcr:data",video.getInputStream());
+    	    		contentNode.setProperty("jcr:mimeType",video.getContentType());
+    	    		contentNode.setProperty("jcr:lastModified",date);
+    			
+    			} else {
+    				
+    				session.refresh(false);
+    				
+    				//set the attributes which are required by user messae page
+    				request.setAttribute("msgTitle", "Unsupported video format");
+    				request.setAttribute("msgBody", "Only Flash videos (.flv) are allowed as video attachement. click <a href=\"www.google.com\">here</a> to covert the videos online.");
+    				request.setAttribute("urlText", "go back to new blog entry page");
+    				request.setAttribute("url","/jackrabbit-jcr-demo/blog/addBlogEntry.jsp");	
+    				
+    				//forward the request to user massage page
+    	            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
+    	            requestDispatcher.forward(request, response);
+    	            return;
+    			}
     		}
-    		
-    		
     		
     		// persist the changes done
     		session.save();
@@ -183,13 +231,14 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
             RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
             requestDispatcher.forward(request, response);
 			
-		
-		} catch (LoginException e) {
-			throw new ServletException("Login error occured",e);
 		} catch (RepositoryException e) {
 			throw new ServletException("Repository error occured",e);
+		} finally {
+			if (session != null) {
+				session.logout();
+			}
 		}
-	}
+	} 
 	
 	/**
 	 * Method that creates a unique title when the given title already exists in the parent node
