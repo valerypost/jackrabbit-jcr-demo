@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jackrabbit.demo.blog.model.UserManager;
 import org.apache.jackrabbit.demo.blog.model.WikiPage;
 
 /**
@@ -37,7 +38,12 @@ import org.apache.jackrabbit.demo.blog.model.WikiPage;
  public class WikiViewControllerServlet extends ControllerServlet {
  	
 	
-	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	 /**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = 5313193989137911990L;
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 
 		 String versionName = request.getParameter("version");
 		 
@@ -75,6 +81,9 @@ import org.apache.jackrabbit.demo.blog.model.WikiPage;
 				WikiPage wikiPage = new WikiPage();
 				wikiPage.setTitle(frontPage.getProperty("wiki:title").getString());
 				wikiPage.setContent(frontPage.getProperty("wiki:content").getString());
+				String userUUID = frontPage.getProperty("wiki:savedBy").getString();
+				
+				wikiPage.setSavedBy(UserManager.getUsername(userUUID,session));
 				wikiPage.setVersion(versionName);
 				
 				if (!rootVersion.isSame(baseVersion)) {
@@ -87,7 +96,11 @@ import org.apache.jackrabbit.demo.blog.model.WikiPage;
 	           
 				
 			} catch (RepositoryException e) {
-				e.printStackTrace();
+				throw new ServletException("Couldn't retrive the wiki page. Error accessing the repository.",e);
+			} finally {
+				if (session != null) {
+					session.logout();
+				}
 			}
 	}   	  	    
 }

@@ -18,9 +18,7 @@ package org.apache.jackrabbit.demo.blog.servlet;
 
 import java.io.IOException;
 
-import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -68,7 +66,7 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
 		try {
 			
 			// Login to the repository
-			Session session = repository.login(new SimpleCredentials("user", "password".toCharArray()));
+			session = repository.login(new SimpleCredentials("user", "password".toCharArray()));
 			
 			// Creates a UserManager and add the user 
 			UserManager userMgr = new UserManager(session);
@@ -87,11 +85,22 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
 				
 			
 		} catch (NonUniqueUsernameException e){
-			throw new ServletException("Username is not unique",e);
-		}catch (LoginException e) {
-			throw new ServletException("Failed to login to repository",e);
+			//set the attributes which are required by user messae page
+			request.setAttribute("msgTitle", "Username Exists ");
+			request.setAttribute("msgBody", "Username you have choosen is already registered in Jackrabbit-jcr-demo");
+			request.setAttribute("urlText", "Try another username");
+			request.setAttribute("url","/jackrabbit-jcr-demo/blog/newUser.jsp");	
+			
+			//forward the request to user massage page
+            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
+            requestDispatcher.forward(request, response);
+					
 		} catch (RepositoryException e) {
 			throw new ServletException("Error occured in accessing repository",e);
+		} finally{
+			if (session != null ){
+				session.logout();
+			}
 		}
 		
 	}   	  	    

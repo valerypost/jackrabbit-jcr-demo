@@ -23,13 +23,13 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.version.Version;
-import javax.jcr.version.VersionException;
 import javax.jcr.version.VersionIterator;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jackrabbit.demo.blog.model.UserManager;
 import org.apache.jackrabbit.demo.blog.model.WikiPage;
 
 /**
@@ -39,7 +39,12 @@ import org.apache.jackrabbit.demo.blog.model.WikiPage;
  public class WikiChangesControllerServlet extends ControllerServlet {
 
 	
-	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	 /**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = -9214209681522982127L;
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 			try {
 				//log in to the repository and aquire a session
@@ -63,6 +68,8 @@ import org.apache.jackrabbit.demo.blog.model.WikiPage;
 						frontPage.restore(version, false);
 						
 						wikiPage.setChangeNote(frontPage.getProperty("wiki:changeNote").getString());
+						String userUUID = frontPage.getProperty("wiki:savedBy").getString();
+						wikiPage.setSavedBy(UserManager.getUsername(userUUID,session));
 						wikiPage.setVersion(version.getName());
 						
 						history.add(wikiPage);
@@ -78,7 +85,11 @@ import org.apache.jackrabbit.demo.blog.model.WikiPage;
 	           
 				
 			} catch (RepositoryException e) {
-				e.printStackTrace();
+				throw new ServletException("Couldn't retrive the wiki page history. Error occured while accessing the repository.",e);
+			} finally {
+				if (session != null) {
+					session.logout();
+				}
 			}
 	}   	  	    
 }

@@ -18,45 +18,24 @@ package org.apache.jackrabbit.demo.blog.servlet;
 
 import java.io.IOException;
 
-import javax.jcr.LoginException;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-import javax.jcr.SimpleCredentials;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jackrabbit.demo.blog.model.UserManager;
-import org.apache.jackrabbit.servlet.ServletRepository;
 
 /**
  * Servlet implementation class for Servlet: LogoutControllerServlet
  *
  */
- public class LogoutControllerServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
+ public class LogoutControllerServlet extends ControllerServlet {
     
 	 /**
 	 * Serial version UID.
 	 */
 	private static final long serialVersionUID = -6122606456722720455L;
 
-	/**
-	 * Repository instance aquired through <code>org.apache.jackrabbit.servlet.ServletRepository</code>
-	 */
-	protected final Repository repository = new ServletRepository(this);
-	
-	
-	/* *
-	 * Handles the GET method requests. Deligate the work to doPost() method
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		doPost(request,response);
-		
-	}   	
-	
+
 	/**
 	 * Handles the POST method requests
 	 */

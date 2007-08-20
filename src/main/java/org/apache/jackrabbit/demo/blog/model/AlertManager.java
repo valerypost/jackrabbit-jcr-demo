@@ -19,55 +19,85 @@ package org.apache.jackrabbit.demo.blog.model;
 import java.util.Date;
 
 import javax.jcr.observation.*;
-import javax.jcr.LoginException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Alert manager is the listener class used to generate email alerts for new comments.
+ *
+ */
+
 public class AlertManager implements EventListener {
 
-	private Repository repository;
+ private static Logger log = LoggerFactory.getLogger(AlertManager.class);
+ 
+ private Repository repository;
 
-	public AlertManager(Repository repo){
-		repository = repo;
-	}
+ 
+ /**
+  * Alert Manager must be initiated with a repository instance as it wants to connect to the repository to
+  * get details(email,..) of the actors(commenter, blog entry owner) of the event.  
+ * @param repo
+ */
+public AlertManager(Repository repo){
+     repository = repo;
+ }
 
-	public void onEvent(EventIterator events) {
+ public void onEvent(EventIterator events) {		
+ 
+     Session session = null;
 		
-		try {
-			Session session = repository.login(new SimpleCredentials("user", "password".toCharArray()));
-			Node rootNode = session.getRootNode();
-			
-			while (events.hasNext()) {
-				Event event = events.nextEvent();
-				String path =  event.getPath();
-				path = path.substring(1, path.length());
-				Node eventNode = rootNode.getNode(path);
-				
-				if (eventNode.getPrimaryNodeType().getName().equals("blog:comment")) {
-					
-					Node commentorNode = eventNode.getProperty("blog:commenter").getNode();
-					String commentor = commentorNode.getProperty("blog:nickname").getString();
-					
-					String title = eventNode.getParent().getProperty("blog:title").getString();
-					
-					Node userNode = eventNode.getParent().getParent().getParent().getParent();
-					String email = userNode.getProperty("blog:email").getString();
-					
-					EmailSender.send(title, commentor, email, new Date());
-
-				}
+     try {
+         session = repository.login(new SimpleCredentials("user", "password".toCharArray()));
+         Node rootNode = session.getRootNode();
 		
+         while (events.hasNext()) {
+             
+        	 Event event = events.nextEvent();
+        	 
+        	 // Getting the path of the node added 
+	         String path =  event.getPath();
+	         
+	         // Making the path a relative path by removing initial "/"
+	         path = path.substring(1, path.length());
+	         
+	         // Acquiring the node just added
+	         Node eventNode = rootNode.getNode(path);
 				
-			}
-			
-		} catch (LoginException e1) {
-			e1.printStackTrace();
-		} catch (RepositoryException e1) {
-			e1.printStackTrace();
-		}				
-	}
-
+	         // Checking whether the node added is a comment node
+             if (eventNode.getPrimaryNodeType().getName().equals("blog:comment")) {
+					
+            	 //  Node Structure used in the application is as follows. 
+            	 // /blogRoot[nt:folder]/user[blog:user]/<yyyy>[nt:folder]/<mm>[nt:folder]/blogEntry[blog:blogEntry]/comment [blog:Comment]
+            	 
+            	 // Resolving the commenter's nick name
+	             Node commentorNode = eventNode.getProperty("blog:commenter").getNode();
+	             String commentor = commentorNode.getProperty("blog:nickname").getString();
+	             
+	             // Resolving the title of the blog entry
+	             String title = eventNode.getParent().getProperty("blog:title").getString();
+	             
+	             //Resolving the blog entry owner's email
+	             Node userNode = eventNode.getParent().getParent().getParent().getParent();
+	             String email = userNode.getProperty("blog:email").getString();
+	             
+	             // Sending the alert email to the blog entry owner 
+	             EmailSender.send(title, commentor, email, new Date());
+             }
+         }
+     } catch (RepositoryException e) {
+         log.error("Alert could not be sent.",e);
+     } finally {
+    	 // finally logout the session only if we have successfully loged in
+    	 if (session != null) {
+    		 session.logout();
+    	 }
+     }
+ }
 }

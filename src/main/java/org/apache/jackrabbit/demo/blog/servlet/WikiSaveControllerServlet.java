@@ -28,11 +28,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jackrabbit.demo.blog.model.UserManager;
+
 /**
  * Servlet implementation class for Servlet: WikiSaveControllerServlet
  *
  */
  public class WikiSaveControllerServlet extends ControllerServlet {
+
+	/**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = -3430995552968940873L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -45,11 +52,23 @@ import javax.servlet.http.HttpServletResponse;
         	
 			Node frontPage = session.getRootNode().getNode("wiki/frontPage");
 			
+			// Get the username of the current session. "username" attribute is set in LoginController when the user log in to the system.
+			String username = (String)request.getSession().getAttribute("username");
+			
+			//If the user is not not logged in, set the username to guest
+			if (username == null) {
+				username = "guest";
+				request.getSession().setAttribute("username", "guest");
+			}
+			
+			String uuid = UserManager.getUUID(username,session);
+			
 			try {
 			
 				frontPage.setProperty("wiki:title", title);
 				frontPage.setProperty("wiki:content",content);
 				frontPage.setProperty("wiki:changeNote",changeNote);
+				frontPage.setProperty("wiki:savedBy",uuid);
 				
 				frontPage.save();
 				
@@ -72,7 +91,11 @@ import javax.servlet.http.HttpServletResponse;
 			
 			
 		} catch (RepositoryException e) {
-			e.printStackTrace();
+			throw new ServletException("Couldn't save the wiki page. Error occured while accessing the repository",e);
+		} finally {
+			if (session != null) {
+				session.logout();
+			}
 		}
 
 	}   	  	    

@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.jackrabbit.demo.blog.servlet;
 
 import java.io.IOException;
@@ -5,11 +21,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.jcr.LoginException;
 import javax.jcr.Node;
-import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.Value;
 import javax.servlet.RequestDispatcher;
@@ -21,14 +34,13 @@ import org.apache.commons.fileupload.DefaultFileItemFactory;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.jackrabbit.servlet.ServletRepository;
 import org.apache.jackrabbit.value.ValueFactoryImpl;
 
 /**
  * Servlet implementation class for Servlet: MultipartBlogEntryController
  *
  */
- public class MultipartBlogController extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
+ public class MultipartBlogController extends ControllerServlet {
   	
 	
 	/**
@@ -36,24 +48,10 @@ import org.apache.jackrabbit.value.ValueFactoryImpl;
 	 */
 	private static final long serialVersionUID = -2175972214551818679L;
 
-	/**
-	 * Repository instance aquired through <code>org.apache.jackrabbit.servlet.ServletRepository</code>
-	 */
-	protected final Repository repository = new ServletRepository(this); 
-
-	
-	/** 
-	 * Method which handles the GET method requests
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
-	}  	
-	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		List parameters = null;
-		String action = null;
 		String title = null;
 		String content = null;
 		FileItem image = null;
@@ -70,10 +68,8 @@ import org.apache.jackrabbit.value.ValueFactoryImpl;
 				
 				 while (paramIter.hasNext()) {
 						FileItem item = (FileItem) paramIter.next();
-						
-						if(item.getFieldName().equalsIgnoreCase("action")){
-							action = item.getString();
-						} else if (item.getFieldName().equalsIgnoreCase("title")) {
+					
+						if (item.getFieldName().equalsIgnoreCase("title")) {
 							title = item.getString();
 						} else if (item.getFieldName().equalsIgnoreCase("content")) {
 							content = item.getString();
@@ -92,9 +88,25 @@ import org.apache.jackrabbit.value.ValueFactoryImpl;
 		
 		try {
 	        //log in to the repository and aquire a session
-			Session session = repository.login(new SimpleCredentials("username","password".toCharArray()));
+			session = repository.login(new SimpleCredentials("username","password".toCharArray()));
 			
 			String username = (String)request.getSession().getAttribute("username");
+			
+			// Only logged in users are allowed to create blog entries
+			if (username == null) {
+				//set the attributes which are required by user messae page
+				request.setAttribute("msgTitle", "Authentication Required");
+				request.setAttribute("msgBody", "Only logged in users are allowed to add blog entries.");
+				request.setAttribute("urlText", "go back to login page");
+				request.setAttribute("url","/jackrabbit-jcr-demo/blog/index.jsp");	
+				
+				//forward the request to user massage page
+	            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
+	            requestDispatcher.forward(request, response);
+	            return;
+				
+			}
+			
 			
 			Node blogRootNode = session.getRootNode().getNode("blogRoot");
 			Node userNode = blogRootNode.getNode(username);
@@ -163,16 +175,15 @@ import org.apache.jackrabbit.value.ValueFactoryImpl;
             RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
             requestDispatcher.forward(request, response);
 			
-		
-		} catch (LoginException e) {
-			throw new ServletException("Login error occured",e);
 		} catch (RepositoryException e) {
-			throw new ServletException("Repository error occured",e);
+			throw new ServletException("COuldn't save the blog entry. Error occured accessing the repository",e);
+		} finally {
+			if(session != null) {
+				session.logout();
+			}
 		}
 		
-		
 	}
-	
 	
 	
 	private String createUniqueName(String name, Node node) throws RepositoryException {

@@ -34,7 +34,12 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
  */
  public class BlogRemoveControllerServlet extends ControllerServlet {
 		
-	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	 /**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = 4358955541231867065L;
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			   
 		 		String UUID = request.getParameter("UUID");
 			  
@@ -45,6 +50,19 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 					
 					// Get the username of the current session. "username" attribute is set in LoginController when the user log in to the system.
 					String username = (String)request.getSession().getAttribute("username");
+					
+					if (username == null) {
+						//set the attributes which are required by user messae page
+						request.setAttribute("msgTitle", "Authentication Required");
+						request.setAttribute("msgBody", "Only logged in users are allowed to delete blog entries.");
+						request.setAttribute("urlText", "go back to login page");
+						request.setAttribute("url","/jackrabbit-jcr-demo/blog/index.jsp");	
+						
+						//forward the request to user massage page
+			            RequestDispatcher requestDispatcher = this.getServletContext().getRequestDispatcher("/blog/userMessage.jsp");
+			            requestDispatcher.forward(request, response);
+			            return;
+					}
 					
 					BlogManager.removeBlogEntry(UUID,username,session);
 					
@@ -59,16 +77,12 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 		            requestDispatcher.forward(request, response);
 				
 			
-			   } catch (LoginException e) {
-					// Log the exception and throw a ServletException
-					log("Couldn't log in to the repository",e);
-					throw new ServletException("Couldn't log in to the repository",e);
 			   } catch (RepositoryException e) {
-					// Log the exception and throw a ServletException
-					log("Error occured while accessing the repository",e);
 					throw new ServletException("Error occured while accessing the repository",e);
 			   } finally {
-				   session.logout();
+				   if (session != null) {
+				    session.logout();
+				   }
 			   }
 		}   	  	    
 }

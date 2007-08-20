@@ -22,6 +22,7 @@ public class WikiPage {
 	private String title;
 	private String content;
 	private String changeNote;
+	private String savedBy;
 	private String version;
 
 	public String getVersion() {
@@ -55,6 +56,12 @@ public class WikiPage {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getSavedBy() {
+		return savedBy;
+	}
+	public void setSavedBy(String savedBy) {
+		this.savedBy = savedBy;
 	}
 	
 	

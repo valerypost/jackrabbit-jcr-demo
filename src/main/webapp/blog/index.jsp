@@ -33,11 +33,11 @@
 	<td width="970" align="center">
 	 <div id="tabs">
 	  <ul>	
-	   <li><a class="inactive" href="#">My Blog</a></li>
-	   <li><a class="inactive" href="#">New Entry</a></li>
-	   <li><a class="inactive" href="#" >Search</a></li>
-	   <li><a class="inactive" href="#" >Wiki</a></li>
-	   <li><a class="inactive" href="#" >Logout</a></li>
+	   <li><a href="/jackrabbit-jcr-demo/blog/view">My Blog</a></li>
+	   <li><a href="/jackrabbit-jcr-demo/blog/addBlogEntry.jsp">New Entry</a></li>
+	   <li><a href="/jackrabbit-jcr-demo/blog/searchBlogEntries.jsp" >Search</a></li>
+	   <li><a href="/jackrabbit-jcr-demo/wiki/view" >Wiki</a></li>
+	   <li><a href="/jackrabbit-jcr-demo/user/logout" >Logout</a></li>
 	  </ul>
 	 </div>
 	</td>
@@ -51,9 +51,9 @@
    <td width="970">
     <table>
    	 <tr>
-   	  <td width="685" height="800" valign="top"></td>
+   	  <td width="685" height="800" valign="top"><jsp:include page="/blog/banners/front-middle.html"/></td>
 	  <td width="5"></td> 
-	  <td width="275" bgcolor="#CCCCCC" valign="top">
+	  <td width="275" bgcolor="#CCDDFF" valign="top">
 	   <form action="/jackrabbit-jcr-demo/user/login" method="post" >
 	    <table width="275">
 	    <tr>
@@ -72,6 +72,7 @@
 	    </tr>
 	   </table>
 	  </form>
+	  <jsp:include page="/blog/banners/front-right.html"/>
 	 </td>
 	 <td width="5"></td>
 	</tr>

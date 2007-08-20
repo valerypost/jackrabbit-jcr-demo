@@ -59,20 +59,22 @@
 					        <table width="100%">
 		                      <tr>
 								<td width="15%"  bgcolor="#CCCCCC">Version</td>
-								<td width="70%" bgcolor="#CCCCCC">Change Note</td>
+								<td width="55%" bgcolor="#CCCCCC">Change Note</td>
+								<td width="15%" bgcolor="#CCCCCC">Saved By</td>
 								<td width="15%" bgcolor="#CCCCCC">View version</td>
 							  </tr>  
 							  <c:forEach var="wikiPage" items="${history}">
 								<tr bgcolor="#CCDDFF">
 									<td>${wikiPage.version}</td>
 									<td>${wikiPage.changeNote}</td>
+									<td>${wikiPage.savedBy}</td>
 									<td><a href="/jackrabbit-jcr-demo/wiki/view?version=${wikiPage.version}">view</a></td>
 								</tr>  
 							 </c:forEach>
 					         </table>      
  						</td>
 		 				<td width="5"></td> 
-						<td width="275" bgcolor="#CCCCCC"></td>
+						<td width="275" bgcolor="#CCDDFF" valign="top"><jsp:include page="/blog/banners/front-right.html"/></td>
 						<td width="5"></td>
 					</tr>
 			  </table>

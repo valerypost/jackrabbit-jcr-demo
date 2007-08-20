@@ -40,7 +40,7 @@ import org.apache.jackrabbit.servlet.ServletRepository;
  * UUID is the UUID of the blog entry which the binay content belongs
  *
  */
- public class BinaryContentViewerServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
+ public class BinaryContentViewerServlet extends ControllerServlet {
 	 
   // prefix of all URIs to binary content
   private final String BINARY_CONTENT_PREFIX = "/jackrabbit-jcr-demo/repo/";
@@ -50,11 +50,6 @@ import org.apache.jackrabbit.servlet.ServletRepository;
   */
   private static final long serialVersionUID = 2747580835785644007L;
 	
-  /**
-  * Repository instance aquired through <code>org.apache.jackrabbit.servlet.ServletRepository</code>
-  */
-  protected final Repository repository = new ServletRepository(this); 
-	 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
    String URI = request.getRequestURI();
@@ -72,7 +67,7 @@ import org.apache.jackrabbit.servlet.ServletRepository;
    try {
 			
     //Login to the repository and aquire a session
-	Session session = repository.login(new SimpleCredentials("username","password".toCharArray()));
+	session = repository.login(new SimpleCredentials("username","password".toCharArray()));
 
 	// Blog entry node is accquired using the UUID
 	Node blogEntryNode = session.getNodeByUUID(uuid);
@@ -99,17 +94,16 @@ import org.apache.jackrabbit.servlet.ServletRepository;
 	 }
 	 out.flush();		
 		
-	}
-			
-   } catch (LoginException e) {
-	   throw new ServletException("Coludn't log in to repository",e);
-   } catch (RepositoryException e) {
-	   throw new ServletException("Error in accessing the repository",e);
-   }
-  }  	
 	
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-   doGet(request,response);
-  }   
+	}
+   }catch (RepositoryException e) {
+	   throw new ServletException("Error in accessing the repository",e);
+   } finally {
+	   if (session != null) {
+		   session.logout();
+	   }
+   }
+	}
   
+  	 
 }

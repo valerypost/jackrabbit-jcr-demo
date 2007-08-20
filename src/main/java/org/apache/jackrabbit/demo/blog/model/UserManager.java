@@ -16,8 +16,6 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
-
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.jcr.Node;
@@ -53,12 +51,11 @@ public class UserManager {
 	 * @param user the <code>org.apache.jackrabbit.demo.blog.model.User</code> bean class to be added as a user
 	 * @throws NonUniqueUsernameException is thrown when the given username already exists
 	 */
-	public void addUser(User user) throws NonUniqueUsernameException {
+	public void addUser(User user) throws NonUniqueUsernameException, RepositoryException {
 		
 		Node blogSpaceNode;
 		Node userNode;
 		
-		try {
 			blogSpaceNode = session.getRootNode().getNode("blogRoot");
 			
 			// Check whether a user with a given name already exists
@@ -75,23 +72,23 @@ public class UserManager {
 		    
 		    session.save();
         
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	
 	
 	public void addUserOCM (User user) throws NonUniqueUsernameException {
 			
-		try{
-    			ObjectContentManager objectContentManager = new ObjectContentManagerImpl(session, Constants.OCM_MAPPPINGS);
-    			user.setPath("/blogRoot/"+user.getUsername());
-    			objectContentManager.insert(user);
-    			objectContentManager.save();
-		} catch (ObjectContentManagerException e){
-				throw new NonUniqueUsernameException("Username Already exists");
-		}
+    	ObjectContentManager objectContentManager = new ObjectContentManagerImpl(session, Config.OCM_MAPPPINGS);
+    	String path = "/blogRoot/"+user.getUsername();
+    			
+    	if (objectContentManager.objectExists(path)) {
+    		throw new NonUniqueUsernameException("Username Already exists");
+    	}
+    			
+    	user.setPath(path);
+        objectContentManager.insert(user);
+    	objectContentManager.save();
+
     		
 	}
 	
@@ -101,7 +98,7 @@ public class UserManager {
 	 */
 	public  Collection<User> getAllUsers() {
 			
-			ObjectContentManager objectContentManager = new ObjectContentManagerImpl(session, Constants.OCM_MAPPPINGS);
+			ObjectContentManager objectContentManager = new ObjectContentManagerImpl(session, Config.OCM_MAPPPINGS);
 			QueryManager queryMgr  = objectContentManager.getQueryManager();
 			Filter filter = queryMgr.createFilter(User.class);
 			filter.setScope("/blogRoot/");
@@ -143,25 +140,33 @@ public class UserManager {
 		} else {
 			return null;
 		}
+	}
+	
+	
+	public static String getUsername(String uuid, Session session) throws RepositoryException {
 		
+		Node userNode = session.getNodeByUUID(uuid);
 		
+		return userNode.getName();
 	}
 	
 	
 	private static Node getUserNode(String username, Session session) throws RepositoryException {
-			javax.jcr.query.QueryManager queryMgr  = session.getWorkspace().getQueryManager();
-			String xPath ="/jcr:root/blogRoot/"+username;
-			javax.jcr.query.Query query = queryMgr.createQuery(xPath,javax.jcr.query.Query.XPATH);
-	        javax.jcr.query.QueryResult queryResult = query.execute();
-	        NodeIterator iter = queryResult.getNodes();
+			
+		//TODO No need of a query here. Can directly get the node by relative path
+		javax.jcr.query.QueryManager queryMgr  = session.getWorkspace().getQueryManager();
+		String xPath ="/jcr:root/blogRoot/"+username;
+		javax.jcr.query.Query query = queryMgr.createQuery(xPath,javax.jcr.query.Query.XPATH);
+	    javax.jcr.query.QueryResult queryResult = query.execute();
+	    NodeIterator iter = queryResult.getNodes();
 	        
-			// Username is unique and if we get a node as a result that means user exists 
-	        if(iter.hasNext()) {      	
-	        	return iter.nextNode(); 	
-	 	    // Username doesn't exist
-	        } else {
-	        	return null;
-	        }
+	    // Username is unique and if we get a node as a result that means user exists 
+	    if(iter.hasNext()) {      	
+	       return iter.nextNode(); 	
+	    // Username doesn't exist
+	    } else {
+	        return null;
+	    }
 	}
 	
 	

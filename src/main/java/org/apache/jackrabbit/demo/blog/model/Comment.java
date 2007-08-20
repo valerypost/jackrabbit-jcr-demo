@@ -16,8 +16,11 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
+/**
+ *  <code>Comment</code> is the bean class used to transfer comments of blog entries.
+ */
 public class Comment {
-	
+
 	private String content;
 	private String commenter;
 	

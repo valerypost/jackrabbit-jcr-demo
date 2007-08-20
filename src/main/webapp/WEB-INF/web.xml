@@ -58,18 +58,23 @@
          <description> Path of the XML file which defines the custom node types for jcr-mapping</description>
       </init-param>
       <init-param>
-         <param-name>constants.ocm.mapping_xml</param-name>
+         <param-name>config.ocm.mapping_xml.path</param-name>
          <param-value>/conf/mapping.xml</param-value>
          <description> Path of the XML file which defines class descriptors for the node bean mapping</description>
       </init-param>
       <init-param>
-         <param-name>constants.mail.mail_server</param-name>
-         <param-value>cssdse.mrt.ac.lk</param-value>
+         <param-name>config.mail.mail_server</param-name>
+         <param-value>cse.mrt.ac.lk</param-value>
          <description>name or the ip address of the mail server used to send comment alert nortifications</description>
       </init-param>
       <init-param>
-         <param-name>constants.mail.from_email</param-name>
+         <param-name>config.mail.from_email</param-name>
          <param-value>nandana.cse@gmail.com</param-value>
+         <description>From address of the emails sent as comment alert nortifications</description>
+      </init-param>
+      <init-param>
+         <param-name>error_config.error_codes_xml.path</param-name>
+         <param-value>/conf/error-codes.xml</param-value>
          <description>From address of the emails sent as comment alert nortifications</description>
       </init-param>
     </servlet>
@@ -337,5 +342,16 @@
     <welcome-file-list>
       <welcome-file>/blog/index.jsp</welcome-file>
     </welcome-file-list>
-
+    
+    <!-- ====================================================================== -->
+    <!--                      E R R O R    P A G E S                            -->
+    <!-- ====================================================================== -->
+    <error-page>
+		<exception-type>org.apache.jackrabbit.demo.blog.exception.JackrabbitJCRDemoException</exception-type>
+		<location>/blog/errorPage.jsp</location>
+	</error-page>
+	    <error-page>
+		<exception-type>javax.servlet.ServletException</exception-type>
+		<location>/blog/errorPage.jsp</location>
+	</error-page>
 </web-app>
