@@ -29,11 +29,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jackrabbit.demo.blog.model.BlogManager;
 
 /**
- * Servlet implementation class for Servlet: BlogRateControllerServlet
+ * Controller class which handles rating of blog entries 
  *
  */
  public class BlogRateControllerServlet extends ControllerServlet {
   	  	    
+	/**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = -6135412363656382434L;
+
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			   
 			   String UUID = request.getParameter("UUID");

@@ -16,6 +16,9 @@
  */
 package org.apache.jackrabbit.demo.blog.model;
 
+/**
+ * Bean class used for wiki page
+ */
 public class WikiPage {
 	
 	private String path;

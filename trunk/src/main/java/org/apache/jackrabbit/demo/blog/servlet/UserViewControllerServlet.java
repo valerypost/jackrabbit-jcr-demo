@@ -17,12 +17,9 @@
 package org.apache.jackrabbit.demo.blog.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,11 +30,16 @@ import org.apache.jackrabbit.demo.blog.model.User;
 import org.apache.jackrabbit.demo.blog.model.UserManager;
 
 /**
- * Servlet implementation class for Servlet: UserViewControllerServlet
+ * Controller class used view all users of the system
  *
  */
  public class UserViewControllerServlet extends ControllerServlet {
    	
+	/**
+	 * Serial version id
+	 */
+	private static final long serialVersionUID = -5411788888815749865L;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       
 		try {

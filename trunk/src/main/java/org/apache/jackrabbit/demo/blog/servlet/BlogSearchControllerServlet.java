@@ -33,7 +33,7 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 import org.apache.jackrabbit.demo.blog.model.UserManager;
 
 /**
- * Servlet implementation class for Servlet: BlogSearchControllerServlet
+ * Controller class which handles searching of blog entries
  *
  */
  public class BlogSearchControllerServlet extends ControllerServlet {   	

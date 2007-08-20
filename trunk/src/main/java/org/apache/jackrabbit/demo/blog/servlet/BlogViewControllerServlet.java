@@ -32,8 +32,7 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 import org.apache.jackrabbit.demo.blog.model.UserManager;
 
 /**
- * Servlet implementation class for Servlet: BlogViewControllerServlet
- *
+ * Controller class which handles the viewing of his/her own blog by user
  */
  public class BlogViewControllerServlet extends ControllerServlet {
   	

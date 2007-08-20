@@ -30,8 +30,8 @@ import org.apache.jackrabbit.demo.blog.model.BlogEntry;
 import org.apache.jackrabbit.demo.blog.model.BlogManager;
 
 /**
- * Servlet implementation class for Servlet: BlogEntryViewController
- *
+ * Class which handles displaying a single blog entry when the uuid is passed as a request parameter
+ * This class is used maily in serving the links in Atom syndication feeds
  */
  public class BlogEntryViewController extends ControllerServlet {
 

@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jackrabbit.demo.blog.model.UserManager;
 
 /**
- * Servlet implementation class for Servlet: WikiSaveControllerServlet
+ * Controller class used to save the changes to wiki page
  *
  */
  public class WikiSaveControllerServlet extends ControllerServlet {

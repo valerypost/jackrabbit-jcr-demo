@@ -33,8 +33,7 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
 import org.apache.jackrabbit.demo.blog.model.WikiPage;
 
 /**
- * Servlet implementation class for Servlet: WikiChangesControllerServlet
- *
+ * Controller class used to view the history of the wiki page.
  */
  public class WikiChangesControllerServlet extends ControllerServlet {
 

@@ -2,6 +2,9 @@ package org.apache.jackrabbit.demo.blog.exception;
 
 import javax.servlet.ServletException;
 
+/**
+ * Exception class used to denote the errors occur in jackrabbit-jcr-demo
+ */
 public class JackrabbitJCRDemoException extends ServletException {
 
 	/**
