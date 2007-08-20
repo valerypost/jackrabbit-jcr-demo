@@ -18,7 +18,6 @@ package org.apache.jackrabbit.demo.blog.servlet;
 
 import java.io.IOException;
 
-import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.RequestDispatcher;
@@ -29,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jackrabbit.demo.blog.model.BlogManager;
 
 /**
- * Servlet implementation class for Servlet: BlogRemoveControllerServlet
+ * Controller class which handles deleting of blog entries
  *
  */
  public class BlogRemoveControllerServlet extends ControllerServlet {
@@ -78,7 +77,7 @@ import org.apache.jackrabbit.demo.blog.model.BlogManager;
 				
 			
 			   } catch (RepositoryException e) {
-					throw new ServletException("Error occured while accessing the repository",e);
+					throw new ServletException("Couldn't delete blog entry.Error occured while accessing the repository",e);
 			   } finally {
 				   if (session != null) {
 				    session.logout();

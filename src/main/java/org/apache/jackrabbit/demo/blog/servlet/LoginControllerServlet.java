@@ -29,8 +29,7 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
 
 
  /**
- * Servlet that handles login and logout
- *
+ * Servlet that handles user login 
  */
 public class LoginControllerServlet extends ControllerServlet {
 

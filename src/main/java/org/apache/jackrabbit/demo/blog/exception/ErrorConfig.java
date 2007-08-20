@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Class used to read error codes amd error messages from a xml
+ */
 public class ErrorConfig {
 	
 	private static Properties errorCodes;

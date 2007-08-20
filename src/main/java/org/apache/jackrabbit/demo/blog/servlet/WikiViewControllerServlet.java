@@ -32,8 +32,7 @@ import org.apache.jackrabbit.demo.blog.model.UserManager;
 import org.apache.jackrabbit.demo.blog.model.WikiPage;
 
 /**
- * Servlet implementation class for Servlet: WikiViewControllerServlet
- *
+ * Controller class used to view the wiki page
  */
  public class WikiViewControllerServlet extends ControllerServlet {
  	

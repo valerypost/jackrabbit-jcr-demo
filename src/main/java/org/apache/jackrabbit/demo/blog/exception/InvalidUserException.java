@@ -18,7 +18,6 @@ package org.apache.jackrabbit.demo.blog.exception;
 
 /**
  * This is thrown when the given user is not a valid user in the system
- *
  */
 public class InvalidUserException extends Exception {
 

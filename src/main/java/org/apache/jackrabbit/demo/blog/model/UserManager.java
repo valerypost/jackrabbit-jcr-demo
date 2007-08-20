@@ -25,7 +25,6 @@ import javax.jcr.Session;
 
 
 import org.apache.jackrabbit.demo.blog.exception.*;
-import org.apache.jackrabbit.ocm.exception.ObjectContentManagerException;
 import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 import org.apache.jackrabbit.ocm.query.Filter;
@@ -35,7 +34,6 @@ import org.apache.jackrabbit.ocm.query.QueryManager;
 
 /**
  * <code>UserManager</code> handles the management of user nodes.
- *
  */
 public class UserManager {
 	

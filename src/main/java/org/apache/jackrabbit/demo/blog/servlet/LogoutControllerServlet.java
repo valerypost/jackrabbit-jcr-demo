@@ -25,8 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * Servlet implementation class for Servlet: LogoutControllerServlet
- *
+ * Servlet that handles user login 
  */
  public class LogoutControllerServlet extends ControllerServlet {
     

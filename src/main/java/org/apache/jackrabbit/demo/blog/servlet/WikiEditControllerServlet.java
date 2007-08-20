@@ -30,7 +30,7 @@ import org.apache.jackrabbit.demo.blog.model.WikiPage;
 
 
 /**
- * Servlet implementation class for Servlet: WikiEditControllerServlet
+ * Controller class used to edit the checkout the wiki page for editing
  *
  */
  public class WikiEditControllerServlet extends ControllerServlet {

@@ -27,6 +27,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.jackrabbit.servlet.ServletRepository;
 
+
+/**
+ * Controller class which is used as the base class for all controller servlets
+ */
 abstract public class ControllerServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet{
 	
 	/**

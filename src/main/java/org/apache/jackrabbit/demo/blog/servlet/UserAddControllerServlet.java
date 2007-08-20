@@ -30,14 +30,14 @@ import org.apache.jackrabbit.demo.blog.model.User;
 import org.apache.jackrabbit.demo.blog.model.UserManager;
 
 /**
- * Servlet implementation class for Servlet: UserAddControllerServlet
+ * Controller class used to add users to the system
  *
  */
  public class UserAddControllerServlet extends ControllerServlet {
  	
 	
 	/**
-	 * 
+	 * Serial version id
 	 */
 	private static final long serialVersionUID = 5292911530212301687L;
 
